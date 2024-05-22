@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PantallaPrincipalActivity"
+    android:background="@android:color/white">
+
+    <ImageButton
+        android:id="@+id/imagenPerfil"
+        android:layout_width="64dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="331dp"
+        android:layout_marginBottom="7dp"
+        android:background="@null"
+        android:scaleType="fitStart"
+        android:src="@drawable/iconoPerfil"
+        app:layout_constraintBottom_toTopOf="@+id/imagenLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"/>
+
+    <ImageView
+        android:id="@+id/imagenLogo"
+        android:layout_width="361dp"
+        android:layout_height="158dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="21dp"
+        android:background="@null"
+        android:scaleType="fitStart"
+        android:src="@drawable/logoApp"
+        app:layout_constraintBottom_toTopOf="@+id/imagenTusJuegos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenPerfil"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imagenTusJuegos"
+        android:layout_width="143dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="134dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/iconoTusJuegos"
+        app:layout_constraintBottom_toTopOf="@+id/textoMisJuegos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenLogo" />
+
+    <ImageView
+        android:id="@+id/imagenTodosJuegos"
+        android:layout_width="151dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="137dp"
+        android:src="@drawable/iconoTodosJuegos"
+        app:layout_constraintBottom_toTopOf="@+id/textoTodosJuegos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textoMisJuegos" />
+
+    <TextView
+        android:id="@+id/textoMisJuegos"
+        android:layout_width="127dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="142dp"
+        android:text="Tus juegos"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenTusJuegos" />
+
+    <TextView
+        android:id="@+id/textoTodosJuegos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="111dp"
+        android:layout_marginBottom="55dp"
+        android:text="Todos los juegos"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenTodosJuegos" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
