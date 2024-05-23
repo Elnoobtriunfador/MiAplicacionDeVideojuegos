@@ -1,4 +1,4 @@
 package com.example.miaplicaciondevideojuegos;
 
-public class PerfilActivity {
+public class PantallaRegistroActivity {
 }

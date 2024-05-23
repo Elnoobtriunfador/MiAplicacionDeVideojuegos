@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "445051035187",
+    "project_id": "miaplicaciondevideojuegos",
+    "storage_bucket": "miaplicaciondevideojuegos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445051035187:android:02c972257d497079db0d46",
+        "android_client_info": {
+          "package_name": "com.example.miaplicaciondevideojuegos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtRkyhEu8WrBpUaSk2X5_4aPoo0rCv6qU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

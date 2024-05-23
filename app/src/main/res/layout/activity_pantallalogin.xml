@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".PantallaLoginActivity">
+
+    <ImageView
+        android:id="@+id/imagenLogo"
+        android:layout_width="469dp"
+        android:layout_height="216dp"
+        android:layout_marginTop="89dp"
+        android:layout_marginBottom="14dp"
+        android:src="@drawable/logoApp"
+        app:layout_constraintBottom_toTopOf="@+id/textoUsuarioInicioSesion"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-62dp" />
+
+    <EditText
+        android:id="@+id/textoUsuarioInicioSesion"
+        android:layout_width="357dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Usuario o correo electronico"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/textoContraseña"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenLogo" />
+
+    <EditText
+        android:id="@+id/textoContraseña"
+        android:layout_width="357dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="6dp"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxRecuerdame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textoUsuarioInicioSesion" />
+
+    <CheckBox
+        android:id="@+id/checkboxRecuerdame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="249dp"
+        android:layout_marginBottom="13dp"
+        android:text="Recuerdame"
+        app:layout_constraintBottom_toTopOf="@+id/botonInicioSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textoContraseña" />
+
+    <Button
+        android:id="@+id/botonInicioSesion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Iniciar sesion"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="485dp" />
+
+    <TextView
+        android:id="@+id/textoRegistrarse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Registrarse"
+        android:textColor="@android:color/holo_blue_light"
+        android:textDecoration="underline"
+        tools:layout_editor_absoluteX="51dp"
+        tools:layout_editor_absoluteY="537dp" />
+
+    <TextView
+        android:id="@+id/textoContraseñaOlvidada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="¿Has olvidado tu contraseña?"
+        android:textColor="@android:color/holo_blue_light"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="537dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
