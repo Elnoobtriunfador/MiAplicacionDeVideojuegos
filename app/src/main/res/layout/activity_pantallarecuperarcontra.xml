@@ -14,10 +14,12 @@
         android:layout_height="216dp"
         android:layout_marginTop="89dp"
         android:layout_marginBottom="14dp"
-        android:src="@drawable/logoApp"
+        android:src="@drawable/logoapp"
         app:layout_constraintBottom_toTopOf="@+id/textoRecuperarCorreo"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-62dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/textoRecuperarCorreo"
@@ -48,14 +50,15 @@
         android:id="@+id/textoIniciarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="155dp"
         android:layout_marginBottom="91dp"
         android:clickable="true"
         android:focusable="true"
         android:text="Iniciar Sesion"
         android:textColor="@android:color/holo_blue_light"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/botonInicioSesion"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="163dp" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

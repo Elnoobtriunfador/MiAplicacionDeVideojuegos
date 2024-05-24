@@ -14,10 +14,12 @@
         android:layout_height="216dp"
         android:layout_marginTop="89dp"
         android:layout_marginBottom="14dp"
-        android:src="@drawable/logoApp"
+        android:src="@drawable/logoapp"
         app:layout_constraintBottom_toTopOf="@+id/textoUsuarioInicioSesion"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-62dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/textoUsuarioInicioSesion"
@@ -65,31 +67,40 @@
         android:id="@+id/botonInicioSesion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="110dp"
         android:text="Iniciar sesion"
-        tools:layout_editor_absoluteX="117dp"
-        tools:layout_editor_absoluteY="485dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkboxRecuerdame" />
 
     <TextView
         android:id="@+id/textoRegistrarse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="4dp"
         android:clickable="true"
         android:focusable="true"
         android:text="Registrarse"
         android:textColor="@android:color/holo_blue_light"
-        android:textDecoration="underline"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="537dp" />
+        app:layout_constraintEnd_toStartOf="@+id/textoContraseñaOlvidada"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/botonInicioSesion" />
 
     <TextView
         android:id="@+id/textoContraseñaOlvidada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="46dp"
         android:clickable="true"
         android:focusable="true"
         android:text="¿Has olvidado tu contraseña?"
         android:textColor="@android:color/holo_blue_light"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="537dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textoRegistrarse"
+        app:layout_constraintTop_toBottomOf="@+id/botonInicioSesion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
