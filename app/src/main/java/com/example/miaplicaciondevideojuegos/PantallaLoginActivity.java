@@ -18,5 +18,12 @@ public class PantallaLoginActivity extends AppCompatActivity{
             Intent intent = new Intent(this, PantallaRegistroActivity.class);
             startActivity(intent);
         });
+
+        TextView textoContraseñaOlvidada = findViewById(R.id.textoContraseñaOlvidada);
+
+        textoContraseñaOlvidada.setOnClickListener(view -> {
+            Intent intent = new Intent(this, PantallaRecuperarContraActivity.class);
+            startActivity(intent);
+        });
     }
 }
