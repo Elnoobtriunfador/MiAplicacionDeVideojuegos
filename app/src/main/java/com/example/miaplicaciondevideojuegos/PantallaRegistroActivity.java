@@ -51,7 +51,7 @@ public class PantallaRegistroActivity extends AppCompatActivity{
                                     startActivity(intent);
                                 } else {
 
-                                    Toast.makeText(this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Correo ya registrado", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {

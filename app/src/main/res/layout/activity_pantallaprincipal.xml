@@ -63,7 +63,7 @@
         android:layout_marginStart="137dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="137dp"
-        android:src="@drawable/iconotusjuegos"
+        android:src="@drawable/iconotodosjuegos"
         app:layout_constraintBottom_toTopOf="@+id/textoTodosJuegos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,11 +71,11 @@
 
     <TextView
         android:id="@+id/textoMisJuegos"
-        android:layout_width="127dp"
-        android:layout_height="42dp"
+        android:layout_width="150dp"
+        android:layout_height="39dp"
         android:layout_marginStart="142dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="142dp"
+        android:layout_marginEnd="135dp"
         android:text="Tus juegos"
         android:textColor="@android:color/black"
         android:textSize="25sp"

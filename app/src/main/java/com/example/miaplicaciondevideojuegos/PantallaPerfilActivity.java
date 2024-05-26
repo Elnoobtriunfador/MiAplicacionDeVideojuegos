@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class PantallaPerfilActivity extends AppCompatActivity {
 
-    private Button botonCerrarSesion;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -28,7 +27,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             finish();
         });
 
-        botonCerrarSesion = findViewById(R.id.botonCerrarSesion);
+        Button botonCerrarSesion = findViewById(R.id.botonCerrarSesion);
         botonCerrarSesion.setOnClickListener(view -> {
             SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -38,7 +37,6 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             mAuth.signOut();
 
             Intent intent = new Intent(this, PantallaLoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });

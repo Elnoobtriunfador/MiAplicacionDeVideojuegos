@@ -56,10 +56,8 @@ public class PantallaLoginActivity extends AppCompatActivity{
             } else {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(correo, contra)
                         .addOnCompleteListener(task -> {
+                            FirebaseUser user = mAuth.getCurrentUser();
                             if (task.isSuccessful()) {
-
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
                                 if (checkboxRecuerdame.isChecked()) {
                                     SharedPreferences sharedPreferences2 = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences2.edit();
@@ -71,20 +69,20 @@ public class PantallaLoginActivity extends AppCompatActivity{
                                     editor.putBoolean("recuerdame", false);
                                     editor.apply();
                                 }
-                                if (currentUser != null) {
+                                if (user != null) {
                                     Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(this, PantallaPrincipalActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             } else {
-                                if (currentUser != null) {
+                                if (user != null) {
                                     Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(this, PantallaPrincipalActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-                                Toast.makeText(this, "Error al iniciar sesion", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Correo o contraseña incorrecto", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

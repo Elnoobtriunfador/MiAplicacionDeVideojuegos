@@ -20,10 +20,8 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
         ImageButton imagenPerfil = findViewById(R.id.imagenPerfil);
         imagenPerfil.setOnClickListener(view -> {
-
-                    Intent intent = new Intent(this, PantallaPerfilActivity.class);
-                    startActivity(intent);
-
+            Intent intent = new Intent(this, PantallaPerfilActivity.class);
+            startActivity(intent);
         });
     }
 }
