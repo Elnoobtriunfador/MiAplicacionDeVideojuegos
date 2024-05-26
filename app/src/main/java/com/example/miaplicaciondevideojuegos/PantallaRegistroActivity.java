@@ -8,12 +8,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PantallaRegistroActivity extends AppCompatActivity{
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +55,25 @@ public class PantallaRegistroActivity extends AppCompatActivity{
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    String userId = user.getUid();
+                                    DocumentReference userRef = db.collection("users").document(userId);
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("name", name);
+                                    userData.put("address", email);
+
+                                    // Establecer los datos del usuario en Firestore
+                                    userRef.set(userData)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // Datos del usuario establecidos correctamente
+                                                    } else {
+                                                        // Error al establecer los datos del usuario
+                                                    }
+                                                }
+                                            });
 
                                     Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(this, PantallaLoginActivity.class);
