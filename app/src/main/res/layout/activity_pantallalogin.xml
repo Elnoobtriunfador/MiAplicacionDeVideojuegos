@@ -29,7 +29,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="16dp"
-        android:hint="Usuario o correo electronico"
+        android:hint="Correo electronico"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/textoContraseña"
         app:layout_constraintEnd_toEndOf="parent"

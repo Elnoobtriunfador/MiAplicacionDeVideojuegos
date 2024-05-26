@@ -76,6 +76,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
                                     finish();
                                 }
                             } else {
+                                user = null;
                                 if (user != null) {
                                     Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(this, PantallaPrincipalActivity.class);
