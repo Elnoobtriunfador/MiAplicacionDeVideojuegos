@@ -55,13 +55,13 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
         ImageView imagenTodosJuegos = findViewById(R.id.imagenTodosJuegos);
         imagenTodosJuegos.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PantallaPerfilActivity.class);
+            Intent intent = new Intent(this, PantallaTodosLosJuegosActivity.class);
             startActivity(intent);
         });
 
         TextView textoTodosJuegos = findViewById(R.id.textoTodosJuegos);
         textoTodosJuegos.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PantallaPerfilActivity.class);
+            Intent intent = new Intent(this, PantallaTodosLosJuegosActivity.class);
             startActivity(intent);
         });
     }
