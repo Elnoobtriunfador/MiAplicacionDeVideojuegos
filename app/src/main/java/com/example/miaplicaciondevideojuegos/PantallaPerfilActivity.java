@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -33,7 +35,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,6 +57,9 @@ public class PantallaPerfilActivity extends AppCompatActivity {
     private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
     private ImageView imagenPerfil;
     private String userId;
+    TextView textoNombreUsuario;
+    TextView textoBiografiaUsuario;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pantallaperfil);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        TextView textoNombreUsuario = findViewById(R.id.textoNombreUsuario);
+        textoNombreUsuario = findViewById(R.id.textoNombreUsuario);
         TextView textoMiembroDesdeUsuario = findViewById(R.id.textoMiembroDesdeUsuario);
         imagenPerfil = findViewById(R.id.imagenPerfil);
 
@@ -70,7 +77,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String name = documentSnapshot.getString("name");
+                    name = documentSnapshot.getString("name");
                     textoNombreUsuario.setText(name);
                     int registrationYear = documentSnapshot.getLong("registrationYear").intValue();
                     int registrationMonth = documentSnapshot.getLong("registrationMonth").intValue();
@@ -101,6 +108,14 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             }
         });
 
+        Button botonEditarPerfil = findViewById(R.id.botonEditarPerfil);
+        botonEditarPerfil.setOnClickListener(view -> {
+
+            Intent intent = new Intent(this, PantallaEditarPerfilActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         Button botonCerrarSesion = findViewById(R.id.botonCerrarSesion);
         botonCerrarSesion.setOnClickListener(view -> {
             SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", Context.MODE_PRIVATE);
@@ -114,6 +129,74 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarDatosUsuario();
+
+        // Escuchar cambios en tiempo real en los datos del usuario
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    // Actualizar la interfaz de usuario con los nuevos datos del usuario
+                    name = documentSnapshot.getString("name");
+                    String bio = documentSnapshot.getString("bio");
+                    String imageUrl = documentSnapshot.getString("profileImageUrl");
+
+                    textoNombreUsuario.setText(name);
+                    if (textoBiografiaUsuario != null) {
+                        textoBiografiaUsuario.setText(bio);
+                    }else {
+
+                    }
+
+
+                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                        Picasso.get().load(imageUrl).into(imagenPerfil);
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+
+    private void cargarDatosUsuario() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        TextView textoNombreUsuario = findViewById(R.id.textoNombreUsuario);
+        TextView textoBiografiaUsuario = findViewById(R.id.textoBiografiaUsuario);
+        imagenPerfil = findViewById(R.id.imagenPerfil);
+        TextView textoMiembroDesdeUsuario = findViewById(R.id.textoMiembroDesdeUsuario);
+
+        if (user != null) {
+            userId = user.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+            userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String name = documentSnapshot.getString("name");
+                    textoNombreUsuario.setText(name);
+                    String bio = documentSnapshot.getString("bio");
+                    textoBiografiaUsuario.setText(bio);
+                    int registrationYear = documentSnapshot.getLong("registrationYear").intValue();
+                    int registrationMonth = documentSnapshot.getLong("registrationMonth").intValue();
+                    int registrationDay = documentSnapshot.getLong("registrationDay").intValue();
+                    textoMiembroDesdeUsuario.setText(registrationDay + " - " + registrationMonth + " - " + registrationYear);
+                    String imageUrl = documentSnapshot.getString("profileImageUrl");
+                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                        Picasso.get()
+                                .load(imageUrl) // Carga la URL si está disponible
+                                .placeholder(R.drawable.iconoperfil) // Imagen predeterminada
+                                .into(imagenPerfil);
+                    }
+                }
+            });
+        }
     }
 
     private void abrirSelectorDeImagen() {
@@ -162,6 +245,18 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         }
     }
 
+    private void procesarImagenSeleccionada(Uri imagenUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
+            imagenPerfil.setImageBitmap(bitmap);
+
+            subirImagenAStorage(imagenUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -175,19 +270,12 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                     Uri imagenUri = Uri.fromFile(new File(rutaArchivoTemporal));
                     procesarImagenSeleccionada(imagenUri);
                 }
+
+                // Después de procesar la imagen, navegar a la pantalla de perfil
+                Intent intent = new Intent(this, PantallaPerfilActivity.class);
+                startActivity(intent);
+                finish(); // Finaliza la actividad actual para evitar volver atrás a la pantalla principal
             }
-        }
-    }
-
-    private void procesarImagenSeleccionada(Uri imagenUri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
-            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
-            imagenPerfil.setImageBitmap(bitmap);
-
-            subirImagenAStorage(imagenUri);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -235,16 +323,25 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(PantallaPerfilActivity.this, "Imagen de perfil actualizada", Toast.LENGTH_SHORT).show();
+                        // Forzar la carga de la nueva imagen
+                        cargarImagenPerfilNueva(downloadUrl);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(PantallaPerfilActivity.this, "Error al actualizar la URL de la imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PantallaPerfilActivity.this, "Error al guardar la URL de la imagen", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void cargarImagenPerfilNueva(String imageUrl) {
+        // Limpiar la caché de Picasso
+        Picasso.get().invalidate(imageUrl);
+
+        // Cargar la nueva imagen
+        Picasso.get().load(imageUrl).into(imagenPerfil);
     }
 
     private Bitmap corregirOrientacion(Bitmap bitmap, String imagePath) {

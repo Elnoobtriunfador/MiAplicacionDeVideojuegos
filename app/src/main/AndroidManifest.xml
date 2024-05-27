@@ -21,6 +21,10 @@
         android:theme="@style/Theme.MiAplicacionDeVideojuegos"
         tools:targetApi="31">
         <activity
+            android:name=".PantallaEditarPerfilActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".PantallaPrincipalActivity"
             android:exported="true">
         </activity>

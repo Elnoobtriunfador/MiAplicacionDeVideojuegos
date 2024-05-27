@@ -82,7 +82,7 @@
         android:id="@+id/textoBiografia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:text="Biografia:"
         android:textColor="@android:color/black"
@@ -93,16 +93,14 @@
 
     <TextView
         android:id="@+id/textoBiografiaUsuario"
-        android:layout_width="281dp"
-        android:layout_height="143dp"
-        android:layout_marginEnd="15dp"
+        android:layout_width="261dp"
+        android:layout_height="142dp"
         android:layout_marginBottom="13dp"
-        android:text=""
         android:inputType="none"
+        android:text=""
         android:textColor="@android:color/black"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textoMiembroDesde"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textoBiografia" />
 
     <TextView
