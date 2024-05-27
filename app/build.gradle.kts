@@ -40,6 +40,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore:25.0.0")
     implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
+    implementation ("com.google.firebase:firebase-firestore:25.0.0")
+    implementation ("com.squareup.picasso:picasso:2.8")
     implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

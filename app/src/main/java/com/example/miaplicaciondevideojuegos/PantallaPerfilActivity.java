@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,14 +26,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PantallaPerfilActivity extends AppCompatActivity {
@@ -39,9 +48,11 @@ public class PantallaPerfilActivity extends AppCompatActivity {
     private static final int PERMISO_CAMARA_REQUEST = 1;
     private static final int SELECCIONAR_IMAGEN_REQUEST = 2;
     private String rutaArchivoTemporal;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
     private ImageView imagenPerfil;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +60,12 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pantallaperfil);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         TextView textoNombreUsuario = findViewById(R.id.textoNombreUsuario);
         TextView textoMiembroDesdeUsuario = findViewById(R.id.textoMiembroDesdeUsuario);
+        imagenPerfil = findViewById(R.id.imagenPerfil);
 
         if (user != null) {
-            String userId = user.getUid();
+            userId = user.getUid();
             DocumentReference userRef = db.collection("users").document(userId);
             userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -65,6 +76,13 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                     int registrationMonth = documentSnapshot.getLong("registrationMonth").intValue();
                     int registrationDay = documentSnapshot.getLong("registrationDay").intValue();
                     textoMiembroDesdeUsuario.setText(registrationDay + " - " + registrationMonth + " - " + registrationYear);
+                    String imageUrl = documentSnapshot.getString("profileImageUrl");
+                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                        Picasso.get()
+                                .load(imageUrl) // Carga la URL si está disponible
+                                .placeholder(R.drawable.iconoperfil) // Imagen predeterminada
+                                .into(imagenPerfil);
+                    }
                 }
             });
         }
@@ -75,7 +93,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        imagenPerfil = findViewById(R.id.imagenPerfil);
+
         imagenPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,29 +117,21 @@ public class PantallaPerfilActivity extends AppCompatActivity {
     }
 
     private void abrirSelectorDeImagen() {
-        // Verificar si se tienen los permisos necesarios para la cámara
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // Si no se tienen permisos, solicitarlos al usuario
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISO_CAMARA_REQUEST);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISO_CAMARA_REQUEST);
         } else {
-            // Si se tienen permisos, proceder a abrir el selector de imagen
             abrirSelector();
         }
     }
 
-    // Método para abrir el selector de imagen
     private void abrirSelector() {
-        // Crear un Intent para seleccionar una imagen de la galería
         Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        // Definir el tipo de contenido
         intentGaleria.setType("image/*");
 
-        // Crear un Intent para abrir la cámara
         Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // Verificar si hay una aplicación de cámara disponible
         if (intentCamara.resolveActivity(getPackageManager()) != null) {
-            // Crear un archivo temporal para guardar la imagen capturada por la cámara
             File archivoFoto = null;
             try {
                 archivoFoto = crearArchivoTemporal();
@@ -129,38 +139,29 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                 ex.printStackTrace();
             }
             if (archivoFoto != null) {
-                // Obtener la URI del archivo temporal
-                Uri uriArchivoFoto = FileProvider.getUriForFile(this,
-                        "com.example.miaplicaciondevideojuegos.fileprovider", archivoFoto);
-                // Pasar la URI como extra al Intent de la cámara
+                Uri uriArchivoFoto = FileProvider.getUriForFile(this, "com.example.miaplicaciondevideojuegos.fileprovider", archivoFoto);
                 intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriArchivoFoto);
             }
         }
 
-        // Crear un Intent para el selector de imágenes que ofrece al usuario las opciones de galería o cámara
         Intent intentSeleccionarImagen = Intent.createChooser(intentGaleria, "Selecciona una imagen");
         intentSeleccionarImagen.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCamara});
 
-        // Iniciar el Intent
         startActivityForResult(intentSeleccionarImagen, SELECCIONAR_IMAGEN_REQUEST);
     }
 
-    // Método para manejar la respuesta de la solicitud de permisos
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISO_CAMARA_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Si el permiso de cámara fue concedido, abrir el selector de imagen
                 abrirSelector();
             } else {
-                // Si el permiso de cámara fue denegado, mostrar un mensaje de que la funcionalidad no está disponible
                 Toast.makeText(this, "La función de cámara no está disponible debido a la falta de permisos", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    // Método para manejar el resultado de la selección de la imagen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -168,29 +169,115 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECCIONAR_IMAGEN_REQUEST) {
                 if (data != null && data.getData() != null) {
-                    // Obtiene la URI de la imagen seleccionada
                     Uri imagenUri = data.getData();
-                    // Establece la imagen seleccionada en tu ImageView
-                    imagenPerfil.setImageURI(imagenUri);
+                    procesarImagenSeleccionada(imagenUri);
                 } else {
-                    // La imagen proviene de la cámara, carga la imagen desde la ruta del archivo temporal
-                    Bitmap bitmap = BitmapFactory.decodeFile(rutaArchivoTemporal);
-                    if (bitmap != null) {
-                        imagenPerfil.setImageBitmap(bitmap);
-                    } else {
-                        // Handle bitmap loading failure
-                    }
+                    Uri imagenUri = Uri.fromFile(new File(rutaArchivoTemporal));
+                    procesarImagenSeleccionada(imagenUri);
                 }
             }
         }
     }
 
-    // Método para crear un archivo temporal para la imagen capturada por la cámara
+    private void procesarImagenSeleccionada(Uri imagenUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
+            imagenPerfil.setImageBitmap(bitmap);
+
+            subirImagenAStorage(imagenUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void subirImagenAStorage(Uri imagenUri) {
+        StorageReference imageRef = storageRef.child("user_images").child(userId);
+
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
+
+            File tempFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "temp_image.jpg");
+            FileOutputStream outputStream = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.close();
+
+            Uri tempUri = Uri.fromFile(tempFile);
+            UploadTask uploadTask = imageRef.putFile(tempUri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    downloadUrlTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUri) {
+                            guardarURLenFirestore(downloadUri.toString());
+                        }
+                    });
+                }}).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(PantallaPerfilActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error al procesar la imagen", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void guardarURLenFirestore(String downloadUrl) {
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.update("profileImageUrl", downloadUrl)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(PantallaPerfilActivity.this, "Imagen de perfil actualizada", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(PantallaPerfilActivity.this, "Error al actualizar la URL de la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private Bitmap corregirOrientacion(Bitmap bitmap, String imagePath) {
+        try {
+            ExifInterface exif = new ExifInterface(imagePath);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateBitmap(bitmap, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateBitmap(bitmap, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateBitmap(bitmap, 270);
+                default:
+                    return bitmap;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return bitmap;
+        }
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
     private File crearArchivoTemporal() throws IOException {
         String nombreArchivo = "imagen_perfil";
         File directorioAlmacenamiento = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File archivoImagen = File.createTempFile(nombreArchivo, ".jpg", directorioAlmacenamiento);
-        rutaArchivoTemporal = archivoImagen.getAbsolutePath(); // Guardar la ruta del archivo temporal
+        rutaArchivoTemporal = archivoImagen.getAbsolutePath();
         return archivoImagen;
     }
 }
