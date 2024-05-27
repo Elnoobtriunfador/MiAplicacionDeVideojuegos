@@ -20,8 +20,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.firebase.Timestamp;
 
 public class PantallaRegistroActivity extends AppCompatActivity{
 
@@ -61,6 +63,13 @@ public class PantallaRegistroActivity extends AppCompatActivity{
                                     Map<String, Object> userData = new HashMap<>();
                                     userData.put("name", name);
                                     userData.put("address", email);
+                                    Calendar calendar = Calendar.getInstance();
+                                    int year = calendar.get(Calendar.YEAR);
+                                    int month = calendar.get(Calendar.MONTH) + 1;
+                                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                    userData.put("registrationYear", year);
+                                    userData.put("registrationMonth", month);
+                                    userData.put("registrationDay", day);
 
                                     // Establecer los datos del usuario en Firestore
                                     userRef.set(userData)
