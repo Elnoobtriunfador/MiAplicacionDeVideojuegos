@@ -1,6 +1,11 @@
 package com.example.miaplicaciondevideojuegos;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,10 +19,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,12 +37,13 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PantallaEditarPerfilActivity extends AppCompatActivity {
 
-    private static final int SELECCIONAR_IMAGEN_REQUEST = 1;
-    private static final int TOMAR_FOTO_REQUEST = 2;
+    private static final int PERMISO_CAMARA_REQUEST = 1;
+    private static final int SELECCIONAR_IMAGEN_REQUEST = 2;
     private ImageView imagenPerfil;
     private EditText editTextNombre, editTextBiografia;
     private Uri imagenUri;
@@ -67,7 +76,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
         imagenPerfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seleccionarImagen();
+                abrirSelectorDeImagen();
             }
         });
 
@@ -75,94 +84,9 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 guardarCambios();
-                // Cerrar la pantalla de perfil
-                Intent intentCerrarPerfil = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
-                intentCerrarPerfil.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Cierra todas las actividades encima de la actividad de perfil
-                startActivity(intentCerrarPerfil);
-                // Abrir la actividad de perfil
-                Intent intentAbrirPerfil = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
-                startActivity(intentAbrirPerfil);
             }
         });
     }
-
-    private void cargarDatosUsuario() {
-        DocumentReference userRef = db.collection("users").document(userId);
-        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String name = documentSnapshot.getString("name");
-                String bio = documentSnapshot.getString("bio");
-                String imageUrl = documentSnapshot.getString("profileImageUrl");
-
-                editTextNombre.setText(name);
-                editTextBiografia.setText(bio);
-
-                if (imageUrl != null && !imageUrl.isEmpty()) {
-                    Picasso.get().load(imageUrl).into(imagenPerfil);
-                }
-            }
-        });
-    }
-
-    private void seleccionarImagen() {
-        // Intent para seleccionar una imagen de la galería
-        Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intentGaleria.setType("image/*");
-
-        // Intent para capturar una nueva imagen con la cámara
-        Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intentCamara.resolveActivity(getPackageManager()) != null) {
-            // Crear un archivo temporal para almacenar la imagen capturada por la cámara
-            File archivoFoto = null;
-            try {
-                archivoFoto = crearArchivoTemporal();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            if (archivoFoto != null) {
-                // Obtener la URI del archivo temporal para la imagen capturada
-                imagenUri = FileProvider.getUriForFile(this, "com.example.miaplicaciondevideojuegos.fileprovider", archivoFoto);
-                // Agregar la URI del archivo temporal al intent de la cámara
-                intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, imagenUri);
-            }
-        }
-
-        // Crear un Intent chooser que combine ambos intents (galería y cámara)
-        Intent intentSeleccionarImagen = Intent.createChooser(intentGaleria, "Selecciona una imagen");
-        intentSeleccionarImagen.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCamara});
-
-        // Iniciar la actividad para seleccionar la imagen
-        startActivityForResult(intentSeleccionarImagen, SELECCIONAR_IMAGEN_REQUEST);
-    }
-
-    private File crearArchivoTemporal() throws IOException {
-        String nombreArchivo = "imagen_perfil";
-        File directorioAlmacenamiento = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File archivoImagen = File.createTempFile(nombreArchivo, ".jpg", directorioAlmacenamiento);
-        rutaArchivoTemporal = archivoImagen.getAbsolutePath();
-        return archivoImagen;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECCIONAR_IMAGEN_REQUEST) {
-                if (data != null && data.getData() != null) {
-                    imagenUri = data.getData();
-                    imagenPerfil.setImageURI(imagenUri);
-                } else {
-                    // No se seleccionó ninguna imagen de la galería, por lo que puede ser una foto de la cámara
-                    imagenPerfil.setImageURI(imagenUri);
-                }
-            } else if (requestCode == TOMAR_FOTO_REQUEST && resultCode == RESULT_OK) {
-                // La foto fue capturada correctamente con la cámara
-                imagenPerfil.setImageURI(imagenUri);
-            }
-        }
-    }
-
     private void guardarCambios() {
         String nuevoNombre = editTextNombre.getText().toString();
         String nuevaBiografia = editTextBiografia.getText().toString();
@@ -185,29 +109,141 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                         Toast.makeText(PantallaEditarPerfilActivity.this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        // Abrir la actividad de perfil
+        Intent intentAbrirPerfil = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
+        startActivity(intentAbrirPerfil);
+    }
+
+    private void cargarDatosUsuario() {
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String name = documentSnapshot.getString("name");
+                String bio = documentSnapshot.getString("bio");
+                String imageUrl = documentSnapshot.getString("profileImageUrl");
+
+                editTextNombre.setText(name);
+                editTextBiografia.setText(bio);
+
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Picasso.get().load(imageUrl).into(imagenPerfil);
+                }
+            }
+        });
+    }
+
+    private void abrirSelectorDeImagen() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISO_CAMARA_REQUEST);
+        } else {
+            abrirSelector();
+        }
+    }
+
+    private void abrirSelector() {
+        Intent intentGaleria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intentGaleria.setType("image/*");
+
+        Intent intentCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intentCamara.resolveActivity(getPackageManager()) != null) {
+            File archivoFoto = null;
+            try {
+                archivoFoto = crearArchivoTemporal();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (archivoFoto != null) {
+                Uri uriArchivoFoto = FileProvider.getUriForFile(this, "com.example.miaplicaciondevideojuegos.fileprovider", archivoFoto);
+                intentCamara.putExtra(MediaStore.EXTRA_OUTPUT, uriArchivoFoto);
+            }
+        }
+
+        Intent intentSeleccionarImagen = Intent.createChooser(intentGaleria, "Selecciona una imagen");
+        intentSeleccionarImagen.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{intentCamara});
+
+        startActivityForResult(intentSeleccionarImagen, SELECCIONAR_IMAGEN_REQUEST);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISO_CAMARA_REQUEST) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                abrirSelector();
+            } else {
+                Toast.makeText(this, "La función de cámara no está disponible debido a la falta de permisos", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void procesarImagenSeleccionada(Uri imagenUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
+            imagenPerfil.setImageBitmap(bitmap);
+
+            subirImagenAStorage(imagenUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECCIONAR_IMAGEN_REQUEST) {
+                if (data != null && data.getData() != null) {
+                    Uri imagenUri = data.getData();
+                    procesarImagenSeleccionada(imagenUri);
+                } else {
+                    Uri imagenUri = Uri.fromFile(new File(rutaArchivoTemporal));
+                    procesarImagenSeleccionada(imagenUri);
+                }
+            }
+        }
     }
 
     private void subirImagenAStorage(Uri imagenUri) {
         StorageReference imageRef = storageRef.child("user_images").child(userId);
 
-        imageRef.putFile(imagenUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri downloadUri) {
-                                guardarURLenFirestore(downloadUri.toString());
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PantallaEditarPerfilActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagenUri);
+            bitmap = corregirOrientacion(bitmap, imagenUri.getPath());
+
+            File tempFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "temp_image.jpg");
+            FileOutputStream outputStream = new FileOutputStream(tempFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.close();
+
+            Uri tempUri = Uri.fromFile(tempFile);
+            UploadTask uploadTask = imageRef.putFile(tempUri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    downloadUrlTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUri) {
+                            guardarURLenFirestore(downloadUri.toString());
+                        }
+                    });
+                }}).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(PantallaEditarPerfilActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error al procesar la imagen", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void guardarURLenFirestore(String downloadUrl) {
@@ -217,8 +253,6 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Forzar la carga de la nueva imagen
-                        cargarImagenPerfilNueva(downloadUrl);
-                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -235,5 +269,39 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
 
         // Cargar la nueva imagen
         Picasso.get().load(imageUrl).into(imagenPerfil);
+    }
+
+    private Bitmap corregirOrientacion(Bitmap bitmap, String imagePath) {
+        try {
+            ExifInterface exif = new ExifInterface(imagePath);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateBitmap(bitmap, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateBitmap(bitmap, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateBitmap(bitmap, 270);
+                default:
+                    return bitmap;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return bitmap;
+        }
+    }
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int degrees) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+    private File crearArchivoTemporal() throws IOException {
+        String nombreArchivo = "imagen_perfil";
+        File directorioAlmacenamiento = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File archivoImagen = File.createTempFile(nombreArchivo, ".jpg", directorioAlmacenamiento);
+        rutaArchivoTemporal = archivoImagen.getAbsolutePath();
+        return archivoImagen;
     }
 }
