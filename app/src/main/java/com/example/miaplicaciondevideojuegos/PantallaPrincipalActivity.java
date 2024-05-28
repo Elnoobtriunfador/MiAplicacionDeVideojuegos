@@ -44,12 +44,12 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
 
         ImageView imagenTusJuegos = findViewById(R.id.imagenTusJuegos);
         imagenTusJuegos.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PantallaPerfilActivity.class);
+            Intent intent = new Intent(this, PantallaTusJuegosActivity.class);
             startActivity(intent);
         });
         TextView textoMisJuegos = findViewById(R.id.textoMisJuegos);
         textoMisJuegos.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PantallaPerfilActivity.class);
+            Intent intent = new Intent(this, PantallaTusJuegosActivity.class);
             startActivity(intent);
         });
 

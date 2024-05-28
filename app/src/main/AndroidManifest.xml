@@ -21,6 +21,10 @@
         android:theme="@style/Theme.MiAplicacionDeVideojuegos"
         tools:targetApi="31">
         <activity
+            android:name=".PantallaTusJuegosActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".PantallaTodosLosJuegosActivity"
             android:exported="true">
         </activity>
