@@ -23,20 +23,20 @@
     <TextView
         android:id="@+id/textViewTitulo"
         android:layout_width="280dp"
-        android:layout_height="22dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginBottom="5dp"
         android:text="Título"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPlataformasJuego"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewPortada"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewPlataformas"
+        android:textColor="@android:color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -52,11 +52,10 @@
     <TextView
         android:id="@+id/textViewPlataformasJuego"
         android:layout_width="194dp"
-        android:layout_height="61dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="36dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewPlataformas"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitulo" />

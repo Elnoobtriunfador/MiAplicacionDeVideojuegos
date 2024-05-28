@@ -9,77 +9,77 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Videojuego {
-    private String nombre;
-    private String desarrollador;
-    private String imagen;
-    private List<String> obtencion;
-    private List<String> progreso;
-    private List<String> plataformaIds;
+    private String Nombre;
+    private String Desarrollador;
+    private String Imagen;
+    private List<String> Obtencion;
+    private List<String> Progreso;
+    private List<String> PlataformaIds;
 
     public Videojuego() {
-        this.obtencion = new ArrayList<>();
-        this.progreso = new ArrayList<>();
-        this.plataformaIds = new ArrayList<>();
+        this.Obtencion = new ArrayList<>();
+        this.Progreso = new ArrayList<>();
+        this.PlataformaIds = new ArrayList<>();
     }
 
     public String getNombre() {
-        return nombre;
+        return Nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.Nombre = nombre;
     }
 
     public String getDesarrollador() {
-        return desarrollador;
+        return Desarrollador;
     }
 
     public void setDesarrollador(String desarrollador) {
-        this.desarrollador = desarrollador;
+        this.Desarrollador = desarrollador;
     }
 
     public String getImagen() {
-        return imagen;
+        return Imagen;
     }
 
     public void setImagen(String imagen) {
-        this.imagen = imagen;
+        this.Imagen = imagen;
     }
 
     public List<String> getObtencion() {
-        return obtencion;
+        return Obtencion;
     }
 
     public void setObtencion(List<String> obtencion) {
-        this.obtencion = obtencion;
+        this.Obtencion = obtencion;
     }
 
     public void addObtencion(String item) {
-        this.obtencion.add(item);
+        this.Obtencion.add(item);
     }
 
     public List<String> getProgreso() {
-        return progreso;
+        return Progreso;
     }
 
     public void setProgreso(List<String> progreso) {
-        this.progreso = progreso;
+        this.Progreso = progreso;
     }
 
     public void addProgreso(String item) {
-        this.progreso.add(item);
+        this.Progreso.add(item);
     }
 
     public List<String> getPlataformas() {
-        return plataformaIds;
+        return PlataformaIds;
     }
 
     public void setPlataformas(List<String> plataformas) {
-        this.plataformaIds = plataformas;
+        this.PlataformaIds = plataformas;
     }
 
     public void addPlataforma(String plataforma) {
-        this.plataformaIds.add(plataforma);
+        this.PlataformaIds.add(plataforma);
     }
 
     public List<String> getPlataformasNombres() {
@@ -89,7 +89,7 @@ public class Videojuego {
         CollectionReference plataformasRef = FirebaseFirestore.getInstance().collection("plataformas");
 
         // Obtenemos los nombres de las plataformas para cada ID
-        for (String plataformaId : plataformaIds) {
+        for (String plataformaId : PlataformaIds) {
             DocumentReference plataformaRef = plataformasRef.document(plataformaId);
             plataformaRef.get()
                     .addOnSuccessListener(documentSnapshot -> {

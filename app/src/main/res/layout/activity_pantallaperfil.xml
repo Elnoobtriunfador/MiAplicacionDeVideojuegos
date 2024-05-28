@@ -68,9 +68,9 @@
     <TextView
         android:id="@+id/textoNombreUsuario"
         android:layout_width="292dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="22dp"
         android:inputType="none"
         android:text=""
         android:textColor="@android:color/black"
@@ -94,35 +94,34 @@
     <TextView
         android:id="@+id/textoBiografiaUsuario"
         android:layout_width="261dp"
-        android:layout_height="142dp"
-        android:layout_marginBottom="13dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:inputType="none"
         android:text=""
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/textoMiembroDesde"
-        app:layout_constraintStart_toEndOf="@+id/textoBiografia" />
+        app:layout_constraintStart_toEndOf="@+id/textoBiografia"
+        app:layout_constraintTop_toBottomOf="@+id/textoNombreUsuario" />
 
     <TextView
         android:id="@+id/textoMiembroDesde"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="13dp"
         android:text="Miembro desde:"
         android:textColor="@android:color/black"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/switchCambiarTema"
         app:layout_constraintEnd_toStartOf="@+id/textoMiembroDesdeUsuario"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoBiografiaUsuario" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textoMiembroDesdeUsuario"
         android:layout_width="136dp"
         android:layout_height="22dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginStart="2dp"
         android:layout_marginEnd="111dp"
         android:layout_marginBottom="13dp"
         android:inputType="none"
@@ -131,22 +130,19 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/switchCambiarTema"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textoMiembroDesde"
-        app:layout_constraintTop_toBottomOf="@+id/textoBiografiaUsuario" />
+        app:layout_constraintStart_toEndOf="@+id/textoMiembroDesde" />
 
     <Switch
         android:id="@+id/switchCambiarTema"
         android:layout_width="137dp"
         android:layout_height="61dp"
         android:layout_marginStart="138dp"
-        android:layout_marginTop="13dp"
         android:layout_marginEnd="136dp"
         android:layout_marginBottom="25dp"
         android:text="Cambiar tema"
         app:layout_constraintBottom_toTopOf="@+id/botonCerrarSesion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoMiembroDesde" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/botonCerrarSesion"
