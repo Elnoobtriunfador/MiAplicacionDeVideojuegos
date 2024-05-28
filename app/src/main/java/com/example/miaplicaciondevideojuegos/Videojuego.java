@@ -89,7 +89,7 @@ public class Videojuego {
 
         for (String nombre : listaPlataformas) {
             Log.d("ADAPTER", "Nombre: " + nombre);
-            nombres.add(nombre.substring(1));
+            nombres.add(nombre.substring(3));
         }
 
         return nombres;

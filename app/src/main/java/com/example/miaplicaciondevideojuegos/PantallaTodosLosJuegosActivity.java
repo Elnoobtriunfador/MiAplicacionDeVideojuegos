@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
     private RecyclerView recyclerViewJuegos;
     private RecyclerViewVideojuegosAdapter videojuegoAdapter;
     private List<Videojuego> listaVideojuegos;
+    private EditText editTextBuscarJuego;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +46,13 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
             finish();
         });
 
-        EditText editTextBuscarJuego = findViewById(R.id.editTextBuscarJuego);
-        editTextBuscarJuego.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        editTextBuscarJuego = findViewById(R.id.editTextBuscarJuego);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    editTextBuscarJuego.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-                } else {
-                    editTextBuscarJuego.setGravity(Gravity.CENTER);
-                }
-                filtrarJuegos(s.toString());
-            }
+        // Botón de búsqueda
+        Button botonBuscar = findViewById(R.id.botonBuscar);
+        botonBuscar.setOnClickListener(view -> {
+            String textoBusqueda = editTextBuscarJuego.getText().toString();
+            videojuegoAdapter.filtrarJuegos(textoBusqueda);
         });
 
         recyclerViewJuegos = findViewById(R.id.recyclerViewJuegos);
@@ -68,7 +60,6 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
         listaVideojuegos = new ArrayList<>();
         videojuegoAdapter = new RecyclerViewVideojuegosAdapter(listaVideojuegos);
         recyclerViewJuegos.setAdapter(videojuegoAdapter);
-
     }
 
     private void cargarDatos() {
@@ -86,23 +77,10 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
                 listaVideojuegos.clear();
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
-                    // Obtener los nombres de las plataformas desde la base de datos
-                    videojuego.setPlataformas(videojuego.getPlataformas());
                     listaVideojuegos.add(videojuego);
                 }
-
-                videojuegoAdapter.notifyDataSetChanged(); // Actualizar el RecyclerView
+                videojuegoAdapter.filtrarJuegos(""); // Inicializar la vista con todos los juegos
             }
         });
-    }
-
-    private void filtrarJuegos(String texto) {
-        List<Videojuego> listaFiltrada = new ArrayList<>();
-        for (Videojuego videojuego : listaVideojuegos) {
-            if (videojuego.getNombre().toLowerCase().contains(texto.toLowerCase())) {
-                listaFiltrada.add(videojuego);
-            }
-        }
-        videojuegoAdapter.filtrarJuegos(listaFiltrada);
     }
 }

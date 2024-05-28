@@ -34,7 +34,7 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull VideojuegoViewHolder holder, int position) {
-        Videojuego videojuego = listaVideojuegos.get(position);
+        Videojuego videojuego = listaFiltrada.get(position); // Usar la lista filtrada
 
         // Cargar la imagen usando Glide
         Glide.with(holder.itemView.getContext())
@@ -47,12 +47,12 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
         List<String> plataformasNombres = videojuego.getPlataformasNombres(videojuego.getPlataformas());
 
         // Mostrar las plataformas en el TextView
-        holder.textViewPlataformasJuego.setText(TextUtils.join(", ", videojuego.getPlataformasNombres(plataformasNombres)));
+        holder.textViewPlataformasJuego.setText(TextUtils.join(", ", plataformasNombres));
     }
 
     @Override
     public int getItemCount() {
-        return listaVideojuegos.size();
+        return listaFiltrada.size(); // Usar la lista filtrada
     }
 
     public static class VideojuegoViewHolder extends RecyclerView.ViewHolder {
@@ -69,8 +69,18 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
     }
 
     // Método para filtrar los juegos
-    public void filtrarJuegos(List<Videojuego> listaFiltrada) {
-        this.listaFiltrada = listaFiltrada; // Actualizar la lista filtrada con la nueva lista filtrada
+    public void filtrarJuegos(String texto) {
+        if (texto.isEmpty()) {
+            listaFiltrada = new ArrayList<>(listaVideojuegos); // Mostrar todos los juegos si no hay texto
+        } else {
+            List<Videojuego> listaFiltradaTemp = new ArrayList<>();
+            for (Videojuego videojuego : listaVideojuegos) {
+                if (videojuego.getNombre().toLowerCase().contains(texto.toLowerCase())) {
+                    listaFiltradaTemp.add(videojuego);
+                }
+            }
+            listaFiltrada = listaFiltradaTemp;
+        }
         notifyDataSetChanged(); // Notificar al RecyclerView que los datos han cambiado
     }
 }
