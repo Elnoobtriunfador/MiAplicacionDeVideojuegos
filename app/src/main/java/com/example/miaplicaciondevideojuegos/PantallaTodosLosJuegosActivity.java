@@ -87,7 +87,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
                     // Obtener los nombres de las plataformas desde la base de datos
-                    videojuego.setPlataformas(videojuego.getPlataformasNombres());
+                    videojuego.setPlataformas(videojuego.getPlataformas());
                     listaVideojuegos.add(videojuego);
                 }
 
