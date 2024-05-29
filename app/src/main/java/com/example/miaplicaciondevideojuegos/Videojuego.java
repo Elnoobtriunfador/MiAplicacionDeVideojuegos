@@ -12,13 +12,18 @@ public class Videojuego implements Serializable{
     private String Nombre;
     private String Desarrollador;
     private String Imagen;
-    private List<String> Obtencion;
-    private List<String> Progreso;
     private List<String> Plataformas;
+    private boolean esperandoParaJugar;
+    private boolean jugando;
+    private boolean completado;
+    private boolean abandonado;
+    private boolean caratulaObtenida;
+    private boolean manualObtenido;
+    private boolean juegoObtenido;
+    private boolean extrasObtenidos;
+    private String id; // Campo para el ID del documento
 
     public Videojuego() {
-        this.Obtencion = new ArrayList<>();
-        this.Progreso = new ArrayList<>();
         this.Plataformas = new ArrayList<>();
     }
 
@@ -26,62 +31,73 @@ public class Videojuego implements Serializable{
         return Nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.Nombre = nombre;
-    }
-
     public String getDesarrollador() {
         return Desarrollador;
-    }
-
-    public void setDesarrollador(String desarrollador) {
-        this.Desarrollador = desarrollador;
     }
 
     public String getImagen() {
         return Imagen;
     }
 
-    public void setImagen(String imagen) {
-        this.Imagen = imagen;
-    }
-
-    public List<String> getObtencion() {
-        return Obtencion;
-    }
-
-    public void setObtencion(List<String> obtencion) {
-        this.Obtencion = obtencion;
-    }
-
-    public void addObtencion(String item) {
-        this.Obtencion.add(item);
-    }
-
-    public List<String> getProgreso() {
-        return Progreso;
-    }
-
-    public void setProgreso(List<String> progreso) {
-        this.Progreso = progreso;
-    }
-
-    public void addProgreso(String item) {
-        this.Progreso.add(item);
-    }
-
     public List<String> getPlataformas() {
         return Plataformas;
     }
 
-    public void setPlataformas(List<String> plataformas) {
-        this.Plataformas = plataformas;
+    public boolean isEsperandoParaJugar() {
+        return esperandoParaJugar;
+    }
+    public void setEsperandoParaJugar(boolean esperandoParaJugar) {
+        this.esperandoParaJugar = esperandoParaJugar;
+    }
+    public boolean isJugando() {
+        return jugando;
+    }
+    public void setJugando(boolean jugando) {
+        this.jugando = jugando;
+    }
+    public boolean isCompletado() {
+        return completado;
+    }
+    public void setCompletado(boolean completado) {
+        this.completado = completado;
+    }
+    public boolean isAbandonado() {
+        return abandonado;
+    }
+    public void setAbandonado(boolean abandonado) {
+        this.abandonado = abandonado;
+    }
+    public boolean isCaratulaObtenida() {
+        return caratulaObtenida;
+    }
+    public void setCaratulaObtenida(boolean caratulaObtenida) {
+        this.caratulaObtenida = caratulaObtenida;
+    }
+    public boolean isManualObtenido() {
+        return manualObtenido;
+    }
+    public void setManualObtenido(boolean manualObtenido) {
+        this.manualObtenido = manualObtenido;
+    }
+    public boolean isJuegoObtenido() {
+        return juegoObtenido;
+    }
+    public void setJuegoObtenido(boolean juegoObtenido) {
+        this.juegoObtenido = juegoObtenido;
+    }
+    public boolean isExtrasObtenidos() {
+        return extrasObtenidos;
+    }
+    public void setExtrasObtenidos(boolean extrasObtenidos) {
+        this.extrasObtenidos = extrasObtenidos;
+    }
+    public String getId() {
+        return id;
     }
 
-    public void addPlataforma(String plataforma) {
-        this.Plataformas.add(plataforma);
+    public void setId(String id) {
+        this.id = id;
     }
-
     public List<String> getPlataformasNombres(List<String> listaPlataformas) {
         List<String> nombres = new ArrayList<>();
 

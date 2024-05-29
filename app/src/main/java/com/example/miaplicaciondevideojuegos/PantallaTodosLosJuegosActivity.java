@@ -77,9 +77,11 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
                 listaVideojuegos.clear();
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
+                    // Asigna el ID del documento al Videojuego
+                    videojuego.setId(doc.getId());
                     listaVideojuegos.add(videojuego);
                 }
-                videojuegoAdapter.filtrarJuegos(""); // Inicializar la vista con todos los juegos
+                videojuegoAdapter.filtrarJuegos("");
             }
         });
     }
