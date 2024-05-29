@@ -105,47 +105,45 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.miaplicaciondevideojuegos.ToggleableRadioGroup
-        android:id="@+id/RadioGroupProgreso"
+    <LinearLayout
+        android:id="@+id/linearProgreso"
         android:layout_width="165dp"
         android:layout_height="178dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="61dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="224dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearObtenido"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textoDesarrollador">
 
-        <RadioButton
-            android:id="@+id/radioButtonEsperando"
-            android:layout_width="wrap_content"
+        <CheckBox
+            android:id="@+id/checkBoxEsperando"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Esperando a jugar"
             android:textColor="@android:color/black" />
 
-        <RadioButton
-            android:id="@+id/radioButtonJugando"
+        <CheckBox
+            android:id="@+id/checkBoxJugando"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
             android:text="Jugando"
             android:textColor="@android:color/black" />
 
-        <RadioButton
-            android:id="@+id/radioButtonCompletado"
+        <CheckBox
+            android:id="@+id/checkBoxCompletado"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
             android:text="Completado"
             android:textColor="@android:color/black" />
 
-        <RadioButton
-            android:id="@+id/radioButtonAbandonado"
+        <CheckBox
+            android:id="@+id/checkBoxAbandonado"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="34dp"
             android:minHeight="48dp"
             android:text="Abandonado"
             android:textColor="@android:color/black" />
-    </com.example.miaplicaciondevideojuegos.ToggleableRadioGroup>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearObtenido"

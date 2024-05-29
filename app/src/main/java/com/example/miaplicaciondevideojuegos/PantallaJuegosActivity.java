@@ -26,11 +26,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     private TextView textViewPlataformas;
     private TextView textViewDesarrollador;
     private Videojuego videojuego;
-    private RadioButton radioButtonEsperando;
-    private RadioButton radioButtonJugando;
-    private RadioButton radioButtonCompletado;
-    private RadioButton radioButtonAbandonado;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +37,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         textViewNombreJuego = findViewById(R.id.textViewNombreJuego);
         textViewPlataformas = findViewById(R.id.textViewPlataformas);
         textViewDesarrollador = findViewById(R.id.textViewDesarrollador);
-        radioButtonEsperando = findViewById(R.id.radioButtonEsperando);
-        radioButtonJugando = findViewById(R.id.radioButtonJugando);
-        radioButtonCompletado = findViewById(R.id.radioButtonCompletado);
-        radioButtonAbandonado = findViewById(R.id.radioButtonAbandonado);
 
         if (videojuego != null) {
             Glide.with(this).load(videojuego.getImagen()).into(imageViewJuego);
@@ -87,40 +78,35 @@ public class PantallaJuegosActivity extends AppCompatActivity {
             finish();
         });
 
+        // Listeners para CheckBox
+        CheckBox checkBoxEsperando = findViewById(R.id.checkBoxEsperando);
+        checkBoxEsperando.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean prevState = checkBoxEsperando.isChecked();
+            videojuego.setEsperandoParaJugar(isChecked);
+            gestionarCheckBoxes(checkBoxEsperando);
+            checkBoxEsperando.setChecked(prevState);
+        });
+        CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
+        checkBoxJugando.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean prevState = checkBoxJugando.isChecked();
+            videojuego.setJugando(isChecked);
+            gestionarCheckBoxes(checkBoxJugando);
+            checkBoxJugando.setChecked(prevState);
+        });
+        CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
+        checkBoxCompletado.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean prevState = checkBoxCompletado.isChecked();
+            videojuego.setCompletado(isChecked);
+            gestionarCheckBoxes(checkBoxCompletado);
+            checkBoxCompletado.setChecked(prevState);
+        });
 
-
-
-
-
-        // Listeners para RadioGroupProgreso (RadioButton)
-        ToggleableRadioGroup radioGroupProgreso = findViewById(R.id.RadioGroupProgreso);
-        radioGroupProgreso.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case radioButtonEsperando:
-                    videojuego.setEsperandoParaJugar(true);
-                    videojuego.setJugando(false);
-                    videojuego.setCompletado(false);
-                    videojuego.setAbandonado(false);
-                    break;
-                case radioButtonJugando:
-                    videojuego.setEsperandoParaJugar(false);
-                    videojuego.setJugando(true);
-                    videojuego.setCompletado(false);
-                    videojuego.setAbandonado(false);
-                    break;
-                case radioButtonCompletado:
-                    videojuego.setEsperandoParaJugar(false);
-                    videojuego.setJugando(false);
-                    videojuego.setCompletado(true);
-                    videojuego.setAbandonado(false);
-                    break;
-                case radioButtonAbandonado:
-                    videojuego.setEsperandoParaJugar(false);
-                    videojuego.setJugando(false);
-                    videojuego.setCompletado(false);
-                    videojuego.setAbandonado(true);
-                    break;
-            }
+        CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
+        checkBoxAbandonado.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            boolean prevState = checkBoxAbandonado.isChecked();
+            videojuego.setAbandonado(isChecked);
+            gestionarCheckBoxes(checkBoxAbandonado);
+            checkBoxAbandonado.setChecked(prevState);
         });
 
         // Listeners para CheckBox
@@ -134,6 +120,27 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         checkBoxExtras.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setExtrasObtenidos(isChecked));
     }
 
+    private void gestionarCheckBoxes(CheckBox checkBox) {
+        CheckBox checkBoxEsperando = findViewById(R.id.checkBoxEsperando);
+        CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
+        CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
+        CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
+
+        // Desmarcar todos los CheckBox excepto el que se ha marcado
+        if (checkBox != checkBoxEsperando) {
+            checkBoxEsperando.setChecked(false);
+        }
+        if (checkBox != checkBoxJugando) {
+            checkBoxJugando.setChecked(false);
+        }
+        if (checkBox != checkBoxCompletado) {
+            checkBoxCompletado.setChecked(false);
+        }
+        if (checkBox != checkBoxAbandonado) {
+            checkBoxAbandonado.setChecked(false);
+        }
+    }
+
     private void guardarCambiosEnFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference juegosRef = db.collection("juegos");
@@ -143,14 +150,14 @@ public class PantallaJuegosActivity extends AppCompatActivity {
 
         // Crea un mapa con los datos del videojuego
         Map<String, Object> data = new HashMap<>();
-        data.put("esperandoParaJugar", videojuego.isEsperandoParaJugar());
-        data.put("jugando", videojuego.isJugando());
-        data.put("completado", videojuego.isCompletado());
-        data.put("abandonado", videojuego.isAbandonado());
-        data.put("caratulaObtenida", videojuego.isCaratulaObtenida());
-        data.put("manualObtenido", videojuego.isManualObtenido());
-        data.put("juegoObtenido", videojuego.isJuegoObtenido());
-        data.put("extrasObtenido", videojuego.isExtrasObtenidos());
+        data.put("Esperando a jugar", videojuego.isEsperandoParaJugar());
+        data.put("Jugando", videojuego.isJugando());
+        data.put("Completado", videojuego.isCompletado());
+        data.put("Abandonado", videojuego.isAbandonado());
+        data.put("Caratula", videojuego.isCaratulaObtenida());
+        data.put("Manual", videojuego.isManualObtenido());
+        data.put("Juego", videojuego.isJuegoObtenido());
+        data.put("Extras", videojuego.isExtrasObtenidos());
 
         // Actualiza el documento del juego en Firestore
         juegosRef.document(juegoId).update(data)
@@ -173,31 +180,33 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         juegosRef.document(juegoId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        videojuego.setEsperandoParaJugar(documentSnapshot.getBoolean("esperandoParaJugar"));
-                        videojuego.setJugando(documentSnapshot.getBoolean("jugando"));
-                        videojuego.setCompletado(documentSnapshot.getBoolean("completado"));
-                        videojuego.setAbandonado(documentSnapshot.getBoolean("abandonado"));
-                        videojuego.setCaratulaObtenida(documentSnapshot.getBoolean("caratulaObtenida"));
-                        videojuego.setManualObtenido(documentSnapshot.getBoolean("manualObtenido"));
-                        videojuego.setJuegoObtenido(documentSnapshot.getBoolean("juegoObtenido"));
-                        videojuego.setExtrasObtenidos(documentSnapshot.getBoolean("extrasObtenido"));
-
-                        // Actualiza los widgets con los datos recuperados
-                        radioButtonEsperando.setChecked(videojuego.isEsperandoParaJugar());
-                        radioButtonJugando.setChecked(videojuego.isJugando());
-                        radioButtonCompletado.setChecked(videojuego.isCompletado());
-                        radioButtonAbandonado.setChecked(videojuego.isAbandonado());
+                        videojuego.setEsperandoParaJugar(documentSnapshot.getBoolean("Esperando a jugar"));
+                        videojuego.setJugando(documentSnapshot.getBoolean("Jugando"));
+                        videojuego.setCompletado(documentSnapshot.getBoolean("Completado"));
+                        videojuego.setAbandonado(documentSnapshot.getBoolean("Abandonado"));
+                        videojuego.setCaratulaObtenida(documentSnapshot.getBoolean("Caratula"));
+                        videojuego.setManualObtenido(documentSnapshot.getBoolean("Manual"));
+                        videojuego.setJuegoObtenido(documentSnapshot.getBoolean("Juego"));
+                        videojuego.setExtrasObtenidos(documentSnapshot.getBoolean("Extras"));
 
                         CheckBox checkBoxCaratula = findViewById(R.id.checkBoxCaratula);
                         CheckBox checkBoxManual = findViewById(R.id.checkBoxManual);
                         CheckBox checkBoxJuego = findViewById(R.id.checkBoxJuego);
                         CheckBox checkBoxExtras = findViewById(R.id.checkBoxExtras);
+                        CheckBox checkBoxEsperando = findViewById(R.id.checkBoxEsperando);
+                        CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
+                        CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
+                        CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
 
                         // CheckBoxes
                         checkBoxCaratula.setChecked(videojuego.isCaratulaObtenida());
                         checkBoxManual.setChecked(videojuego.isManualObtenido());
                         checkBoxJuego.setChecked(videojuego.isJuegoObtenido());
                         checkBoxExtras.setChecked(videojuego.isExtrasObtenidos());
+                        checkBoxEsperando.setChecked(videojuego.isEsperandoParaJugar());
+                        checkBoxJugando.setChecked(videojuego.isJugando());
+                        checkBoxCompletado.setChecked(videojuego.isCompletado());
+                        checkBoxAbandonado.setChecked(videojuego.isAbandonado());
                     }
                 })
                 .addOnFailureListener(e -> {
