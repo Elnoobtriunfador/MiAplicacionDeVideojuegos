@@ -2,10 +2,6 @@ package com.example.miaplicaciondevideojuegos;
 
 import android.util.Log;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.List;
 
 import java.util.ArrayList;
