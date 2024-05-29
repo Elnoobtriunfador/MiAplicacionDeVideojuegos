@@ -10,7 +10,9 @@ import java.util.List;
 
 import java.util.ArrayList;
 
-public class Videojuego {
+import java.io.Serializable;
+
+public class Videojuego implements Serializable{
     private String Nombre;
     private String Desarrollador;
     private String Imagen;

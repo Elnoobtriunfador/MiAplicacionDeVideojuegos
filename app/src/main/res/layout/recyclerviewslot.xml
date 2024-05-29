@@ -9,49 +9,34 @@
 
     <ImageView
         android:id="@+id/imageViewPortada"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="3dp"
+        android:layout_width="85dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="13dp"
-        android:layout_marginEnd="6dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewPlataformas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewTitulo"
-        android:layout_width="280dp"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="7dp"
         android:text="Título"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.73"
         app:layout_constraintStart_toEndOf="@+id/imageViewPortada"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewPlataformas"
-        android:textColor="@android:color/black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="68dp"
-        android:text="Plataformas:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewPlataformasJuego"
-        app:layout_constraintStart_toEndOf="@+id/imageViewPortada"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitulo" />
-
-    <TextView
         android:id="@+id/textViewPlataformasJuego"
-        android:layout_width="171dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="37dp"
         android:text=""
@@ -59,5 +44,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewPlataformas"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitulo" />
+
+    <TextView
+        android:id="@+id/textViewPlataformas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="68dp"
+        android:text="Plataformas:"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPlataformasJuego"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPortada"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitulo"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

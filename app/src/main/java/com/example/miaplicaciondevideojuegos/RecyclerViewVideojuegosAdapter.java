@@ -1,5 +1,7 @@
 package com.example.miaplicaciondevideojuegos;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +20,13 @@ import java.util.List;
 public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<RecyclerViewVideojuegosAdapter.VideojuegoViewHolder> {
 
     private List<Videojuego> listaVideojuegos;
-    private List<Videojuego> listaFiltrada; // Lista filtrada para almacenar los juegos filtrados
+    private List<Videojuego> listaFiltrada;
+    private Context context;
 
     public RecyclerViewVideojuegosAdapter(List<Videojuego> listaVideojuegos) {
         this.listaVideojuegos = listaVideojuegos;
-        this.listaFiltrada = new ArrayList<>(listaVideojuegos); // Inicializar la lista filtrada con la lista original
+        this.listaFiltrada = new ArrayList<>(listaVideojuegos);
+        this.context = context;
     }
 
     @NonNull
@@ -34,7 +38,7 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(@NonNull VideojuegoViewHolder holder, int position) {
-        Videojuego videojuego = listaFiltrada.get(position); // Usar la lista filtrada
+        Videojuego videojuego = listaFiltrada.get(position);
 
         // Cargar la imagen usando Glide
         Glide.with(holder.itemView.getContext())
@@ -48,6 +52,15 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
 
         // Mostrar las plataformas en el TextView
         holder.textViewPlataformasJuego.setText(TextUtils.join(", ", plataformasNombres));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PantallaJuegosActivity.class);
+                intent.putExtra("Videojuego", videojuego);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

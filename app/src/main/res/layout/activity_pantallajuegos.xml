@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".PantallaJuegosActivity">
+
+    <ImageButton
+        android:id="@+id/imagenVolver"
+        android:layout_width="64dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:background="@null"
+        android:scaleType="fitStart"
+        android:src="@drawable/iconovolver"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewJuego"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewJuego"
+        android:layout_width="193dp"
+        android:layout_height="267dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/textViewNombreJuego"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Nombre del Juego"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewJuego" />
+
+    <TextView
+        android:id="@+id/textViewPlataformas"
+        android:layout_width="253dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text=""
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textViewPlataformasLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreJuego" />
+
+    <TextView
+        android:id="@+id/textViewDesarrolladorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Desarrollador:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlataformasLabel" />
+
+    <TextView
+        android:id="@+id/textViewDesarrollador"
+        android:layout_width="242dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:text=""
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textViewDesarrolladorLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlataformasLabel" />
+
+    <TextView
+        android:id="@+id/textViewPlataformasLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Plataformas:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreJuego" />
+
+
+    <Button
+        android:id="@+id/buttonAnadirColeccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Añadir a tu colección"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/RadioGroupProgreso"
+        android:layout_width="165dp"
+        android:layout_height="178dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="81dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/RadioGroupObtenido"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDesarrolladorLabel">
+
+        <RadioButton
+            android:id="@+id/radioButtonEsperando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Esperando a jugar" />
+
+        <RadioButton
+            android:id="@+id/radioButtonJugando"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jugando" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCompletado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Completado" />
+
+        <RadioButton
+            android:id="@+id/radioButtonAbandonado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Abandonado" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/RadioGroupObtenido"
+        android:layout_width="165dp"
+        android:layout_height="178dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDesarrolladorLabel">
+
+        <RadioButton
+            android:id="@+id/radioButtonCaratula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Caratula" />
+
+        <RadioButton
+            android:id="@+id/radioButtonManual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manual" />
+
+        <RadioButton
+            android:id="@+id/radioButtonJuego"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Juego" />
+
+        <RadioButton
+            android:id="@+id/radioButtonExtras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="Extras" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
