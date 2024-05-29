@@ -23,7 +23,7 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
     private List<Videojuego> listaFiltrada;
     private Context context;
 
-    public RecyclerViewVideojuegosAdapter(List<Videojuego> listaVideojuegos) {
+    public RecyclerViewVideojuegosAdapter(List<Videojuego> listaVideojuegos, Context context) {
         this.listaVideojuegos = listaVideojuegos;
         this.listaFiltrada = new ArrayList<>(listaVideojuegos);
         this.context = context;
@@ -65,7 +65,7 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
-        return listaFiltrada.size(); // Usar la lista filtrada
+        return listaFiltrada.size();
     }
 
     public static class VideojuegoViewHolder extends RecyclerView.ViewHolder {
@@ -81,10 +81,9 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    // Método para filtrar los juegos
     public void filtrarJuegos(String texto) {
         if (texto.isEmpty()) {
-            listaFiltrada = new ArrayList<>(listaVideojuegos); // Mostrar todos los juegos si no hay texto
+            listaFiltrada = new ArrayList<>(listaVideojuegos);
         } else {
             List<Videojuego> listaFiltradaTemp = new ArrayList<>();
             for (Videojuego videojuego : listaVideojuegos) {
@@ -94,6 +93,6 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
             }
             listaFiltrada = listaFiltradaTemp;
         }
-        notifyDataSetChanged(); // Notificar al RecyclerView que los datos han cambiado
+        notifyDataSetChanged();
     }
 }

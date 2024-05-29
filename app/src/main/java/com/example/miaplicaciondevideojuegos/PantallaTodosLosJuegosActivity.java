@@ -58,7 +58,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
         recyclerViewJuegos = findViewById(R.id.recyclerViewJuegos);
         recyclerViewJuegos.setLayoutManager(new LinearLayoutManager(this));
         listaVideojuegos = new ArrayList<>();
-        videojuegoAdapter = new RecyclerViewVideojuegosAdapter(listaVideojuegos);
+        videojuegoAdapter = new RecyclerViewVideojuegosAdapter(listaVideojuegos, this);
         recyclerViewJuegos.setAdapter(videojuegoAdapter);
     }
 
