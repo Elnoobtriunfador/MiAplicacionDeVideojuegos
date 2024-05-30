@@ -41,9 +41,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewConsolas"
-        android:layout_width="406dp"
-        android:layout_height="34dp"
+        android:layout_width="400dp"
+        android:layout_height="35dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="11dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewJuegos"
         app:layout_constraintEnd_toEndOf="parent"

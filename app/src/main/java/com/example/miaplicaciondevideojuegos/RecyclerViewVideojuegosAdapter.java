@@ -58,6 +58,7 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
             public void onClick(View v) {
                 Intent intent = new Intent(context, PantallaJuegosActivity.class);
                 intent.putExtra("Videojuego", videojuego);
+                intent.putExtra("clave_int", 2);
                 context.startActivity(intent);
             }
         });

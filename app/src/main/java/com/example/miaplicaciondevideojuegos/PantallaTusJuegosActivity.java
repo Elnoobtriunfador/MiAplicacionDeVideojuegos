@@ -28,6 +28,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
     private RecyclerViewJuegosAdapter juegosAdapter;
     private List<Plataforma> plataformas;
     private List<Videojuego> juegos;
+    private List<Videojuego> juegosFiltrados;
     private FirebaseFirestore db;
     private String nombre;
 
@@ -64,6 +65,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                     adapter = new RecyclerViewConsolasAdapter(plataformas, this);
                     recyclerView.setAdapter(adapter);
                     adapter.selectDefaultItem(0);
+                    adapter.setOnItemSelectedListener(this::filtrarJuegosPorPlataforma);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(PantallaTusJuegosActivity.this, "Error al obtener plataformas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -88,15 +90,24 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                 juegos = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
-                    // Asigna el ID del documento al Videojuego
                     videojuego.setId(doc.getId());
                     juegos.add(videojuego);
                 }
 
-                // Crear y establecer el adaptador
-                juegosAdapter = new RecyclerViewJuegosAdapter(juegos, PantallaTusJuegosActivity.this);
+                juegosFiltrados = new ArrayList<>(juegos);
+                juegosAdapter = new RecyclerViewJuegosAdapter(juegosFiltrados, PantallaTusJuegosActivity.this);
                 recyclerView2.setAdapter(juegosAdapter);
             }
         });
+    }
+
+    private void filtrarJuegosPorPlataforma(Plataforma plataformaSeleccionada) {
+        juegosFiltrados.clear();
+        for (Videojuego juego : juegos) {
+            if (juego.getPlataformas().contains(plataformaSeleccionada.getNombre())) {
+                juegosFiltrados.add(juego);
+            }
+        }
+        juegosAdapter.notifyDataSetChanged();
     }
 }

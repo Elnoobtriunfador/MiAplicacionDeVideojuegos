@@ -35,25 +35,18 @@ public class RecyclerViewConsolasAdapter extends RecyclerView.Adapter<RecyclerVi
         Plataforma plataforma = plataformas.get(position);
         holder.textViewPlataforma.setText(plataforma.getNombre());
 
-        // Cambia el fondo del elemento seleccionado por defecto
         if (selectedPosition == position) {
             holder.itemView.setBackgroundColor(Color.LTGRAY);
         } else {
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        // Maneja el clic en el elemento
         holder.itemView.setOnClickListener(v -> {
             if (selectedPosition != position) {
-                // Actualiza el índice del elemento seleccionado
                 int previousSelectedPosition = selectedPosition;
                 selectedPosition = position;
-
-                // Notifica al adaptador de los cambios para reflejar la selección
                 notifyItemChanged(previousSelectedPosition);
                 notifyItemChanged(selectedPosition);
-
-                // Notifica al oyente de la selección del nuevo elemento
                 onItemSelected(plataforma);
             }
         });
@@ -73,30 +66,25 @@ public class RecyclerViewConsolasAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    // Interfaz para manejar la selección de un elemento
     public interface OnItemSelectedListener {
         void onItemSelected(Plataforma plataforma);
     }
 
     private OnItemSelectedListener listener;
 
-    // Método para configurar el oyente de la selección del elemento
     public void setOnItemSelectedListener(OnItemSelectedListener listener) {
         this.listener = listener;
     }
 
-    // Método para notificar al oyente de la selección del elemento
     private void onItemSelected(Plataforma plataforma) {
         if (listener != null) {
             listener.onItemSelected(plataforma);
         }
     }
 
-    // Método para seleccionar un elemento por defecto
     public void selectDefaultItem(int defaultPosition) {
         selectedPosition = defaultPosition;
         notifyDataSetChanged();
-        // Notificar al oyente de la selección del elemento por defecto
         if (selectedPosition != -1) {
             onItemSelected(plataformas.get(selectedPosition));
         }

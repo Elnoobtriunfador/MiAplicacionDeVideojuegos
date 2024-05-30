@@ -37,6 +37,10 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pantallajuegos);
 
         videojuego = (Videojuego) getIntent().getSerializableExtra("Videojuego");
+        Intent intent = getIntent();
+
+        // Recuperar el valor int pasado en el Intent
+        int claveInt = intent.getIntExtra("clave_int", 0);
 
         imageViewJuego = findViewById(R.id.imageViewJuego);
         textViewNombreJuego = findViewById(R.id.textViewNombreJuego);
@@ -57,30 +61,15 @@ public class PantallaJuegosActivity extends AppCompatActivity {
 
         ImageButton imagenVolver = findViewById(R.id.imagenVolver);
         imagenVolver.setOnClickListener(view -> {
-
-
-
-
-            // ALERTA ESTO NO VA A QUI, ES SOLO PARA PROBAR
-            // IR EN UN BOTON DE GUARDAR CAMBIOS QUE TENDRAS SOLO CUANDO EL JUEGO ESTA EN TU COLECCION
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            Intent intent = new Intent(this, PantallaTodosLosJuegosActivity.class);
-            startActivity(intent);
-            finish();
+            if(claveInt == 1){
+                Intent intent2 = new Intent(this, PantallaTusJuegosActivity.class);
+                startActivity(intent2);
+                finish();
+            }else{
+                Intent intent3 = new Intent(this, PantallaTodosLosJuegosActivity.class);
+                startActivity(intent3);
+                finish();
+            }
         });
 
         Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
