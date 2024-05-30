@@ -49,11 +49,11 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                         if (nombre != null) {
                             plataformas.add(new Plataforma(nombre));
                         } else {
-                            Toast.makeText(PantallaTusJuegosActivity.this, "Error: Falta el nombre de la plataforma.", Toast.LENGTH_SHORT).show();
                         }
                     }
                     adapter = new RecyclerViewConsolasAdapter(plataformas, this);
                     recyclerView.setAdapter(adapter);
+                    adapter.selectDefaultItem(0);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(PantallaTusJuegosActivity.this, "Error al obtener plataformas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
