@@ -173,7 +173,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         data.put("Manual", videojuego.isManualObtenido());
         data.put("Juego", videojuego.isJuegoObtenido());
         data.put("Extras", videojuego.isExtrasObtenidos());
-        data.put("Lo tengo", videojuego.isLoTengo());
+        data.put("Lo tengo", videojuego.getLoTengo());
 
         // Actualiza el documento del juego en Firestore
         juegosRef.document(juegoId).update(data)
@@ -215,7 +215,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
                         CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
                         Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
-                        agregarColeccion.setVisibility(videojuego.isLoTengo() ? View.GONE : View.VISIBLE);
+                        agregarColeccion.setVisibility(videojuego.getLoTengo() ? View.GONE : View.VISIBLE);
 
 
                         // CheckBoxes

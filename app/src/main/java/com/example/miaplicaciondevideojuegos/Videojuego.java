@@ -2,6 +2,8 @@ package com.example.miaplicaciondevideojuegos;
 
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.List;
 
 import java.util.ArrayList;
@@ -93,7 +95,7 @@ public class Videojuego implements Serializable{
     public void setExtrasObtenidos(boolean extrasObtenidos) {
         this.extrasObtenidos = extrasObtenidos;
     }
-    public boolean isLoTengo() {
+    public boolean getLoTengo() {
         return loTengo;
     }
     public void setLoTengo(boolean loTengo) {
@@ -122,5 +124,19 @@ public class Videojuego implements Serializable{
         }
 
         return nombres;
+    }
+
+    public void cargarBooleans(DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists()) {
+            this.setEsperandoParaJugar(documentSnapshot.getBoolean("Esperando a jugar"));
+            this.setJugando(documentSnapshot.getBoolean("Jugando"));
+            this.setCompletado(documentSnapshot.getBoolean("Completado"));
+            this.setAbandonado(documentSnapshot.getBoolean("Abandonado"));
+            this.setCaratulaObtenida(documentSnapshot.getBoolean("Caratula"));
+            this.setManualObtenido(documentSnapshot.getBoolean("Manual"));
+            this.setJuegoObtenido(documentSnapshot.getBoolean("Juego"));
+            this.setExtrasObtenidos(documentSnapshot.getBoolean("Extras"));
+            this.setLoTengo(documentSnapshot.getBoolean("Lo tengo"));
+        }
     }
 }

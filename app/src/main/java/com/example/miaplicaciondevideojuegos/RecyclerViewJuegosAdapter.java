@@ -67,7 +67,7 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return juegos.size();
+        return listaJuegosAgregados.size();
     }
 
     public static class JuegoViewHolder extends RecyclerView.ViewHolder {
@@ -82,16 +82,15 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
             textViewPlataformasJuego = itemView.findViewById(R.id.textViewPlataformasJuego);
         }
     }
-    public void filtrarJuegosAgregados() {
-        // Limpiar la lista actual de juegos agregados
-        listaJuegosAgregados.clear();
+    public void filtrarJuegosAgregados(List<Videojuego> juegos) {
 
-        // Filtrar los juegos que tienen "Lo tengo" en true
-        listaJuegosAgregados.addAll(juegos.stream()
-                .filter(Videojuego::isLoTengo)
-                .collect(Collectors.toList()));
-
-        // Notificar al RecyclerView que los datos han cambiado
+        List<Videojuego> listaFiltradaTemp = new ArrayList<>();
+        for (Videojuego juego : juegos) {
+            if (juego.getLoTengo()) {
+                listaFiltradaTemp.add(juego);
+            }
+        }
+        listaJuegosAgregados = listaFiltradaTemp;
         notifyDataSetChanged();
     }
 }
