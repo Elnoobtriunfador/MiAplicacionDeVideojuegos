@@ -21,6 +21,7 @@ public class Videojuego implements Serializable{
     private boolean manualObtenido;
     private boolean juegoObtenido;
     private boolean extrasObtenidos;
+    private boolean loTengo;
     private String id; // Campo para el ID del documento
     private String userId;
 
@@ -91,6 +92,12 @@ public class Videojuego implements Serializable{
     }
     public void setExtrasObtenidos(boolean extrasObtenidos) {
         this.extrasObtenidos = extrasObtenidos;
+    }
+    public boolean isLoTengo() {
+        return loTengo;
+    }
+    public void setLoTengo(boolean loTengo) {
+        this.loTengo = loTengo;
     }
     public String getId() {
         return id;

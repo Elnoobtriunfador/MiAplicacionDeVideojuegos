@@ -4,16 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -26,6 +30,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     private TextView textViewPlataformas;
     private TextView textViewDesarrollador;
     private Videojuego videojuego;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +69,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
 
 
 
-            guardarCambiosEnFirestore();
+
 
 
 
@@ -76,6 +81,28 @@ public class PantallaJuegosActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PantallaTodosLosJuegosActivity.class);
             startActivity(intent);
             finish();
+        });
+
+        Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
+        agregarColeccion.setOnClickListener(view -> {
+
+            // Obtén el ID del juego que se quiere agregar
+            String juegoId = videojuego.getId(); // Implementa esta función para obtener el ID
+
+            // Actualiza el campo "tiene" a "true" en Firestore
+            DocumentReference juegoRef = db.collection("juegos").document(juegoId);
+            juegoRef.update("Lo tengo", true)
+                    .addOnSuccessListener(aVoid -> {
+                        // El juego se agregó correctamente a la colección
+                        Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
+                        videojuego.setLoTengo(true); // Actualiza el objeto Videojuego
+                        agregarColeccion.setVisibility(View.INVISIBLE);
+                        guardarCambiosEnFirestore();
+                    })
+                    .addOnFailureListener(e -> {
+                        // Error al agregar el juego
+                        Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
+                    });
         });
 
         // Listeners para CheckBox
@@ -142,7 +169,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     }
 
     private void guardarCambiosEnFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference juegosRef = db.collection("juegos");
 
         // Obtén el ID del documento desde el objeto Videojuego
@@ -158,6 +184,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         data.put("Manual", videojuego.isManualObtenido());
         data.put("Juego", videojuego.isJuegoObtenido());
         data.put("Extras", videojuego.isExtrasObtenidos());
+        data.put("Lo tengo", videojuego.isLoTengo());
 
         // Actualiza el documento del juego en Firestore
         juegosRef.document(juegoId).update(data)
@@ -189,6 +216,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         videojuego.setJuegoObtenido(documentSnapshot.getBoolean("Juego"));
                         videojuego.setExtrasObtenidos(documentSnapshot.getBoolean("Extras"));
 
+
                         CheckBox checkBoxCaratula = findViewById(R.id.checkBoxCaratula);
                         CheckBox checkBoxManual = findViewById(R.id.checkBoxManual);
                         CheckBox checkBoxJuego = findViewById(R.id.checkBoxJuego);
@@ -197,6 +225,9 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
                         CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
                         CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
+                        Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
+                        agregarColeccion.setVisibility(videojuego.isLoTengo() ? View.GONE : View.VISIBLE);
+
 
                         // CheckBoxes
                         checkBoxCaratula.setChecked(videojuego.isCaratulaObtenida());
@@ -207,6 +238,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         checkBoxJugando.setChecked(videojuego.isJugando());
                         checkBoxCompletado.setChecked(videojuego.isCompletado());
                         checkBoxAbandonado.setChecked(videojuego.isAbandonado());
+                        agregarColeccion.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.GONE : View.VISIBLE);
                     }
                 })
                 .addOnFailureListener(e -> {
