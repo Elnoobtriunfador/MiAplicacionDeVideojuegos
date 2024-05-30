@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PantallaTusJuegosActivity extends AppCompatActivity {
 
@@ -28,7 +29,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
     private RecyclerViewJuegosAdapter juegosAdapter;
     private List<Plataforma> plataformas;
     private List<Videojuego> juegos;
-    private List<Videojuego> juegosFiltrados;
+    private List<Videojuego> juegosAgregados;
     private FirebaseFirestore db;
     private String nombre;
 
@@ -36,6 +37,8 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallatusjuegos);
+
+        juegosAgregados = new ArrayList<>(); // Inicializar la lista aquí
 
         cargarDatos();
 
@@ -65,7 +68,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                     adapter = new RecyclerViewConsolasAdapter(plataformas, this);
                     recyclerView.setAdapter(adapter);
                     adapter.selectDefaultItem(0);
-                    adapter.setOnItemSelectedListener(this::filtrarJuegosPorPlataforma);
+                    //adapter.setOnItemSelectedListener(this::filtrarJuegosPorPlataforma);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(PantallaTusJuegosActivity.this, "Error al obtener plataformas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -94,14 +97,24 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                     juegos.add(videojuego);
                 }
 
-                juegosFiltrados = new ArrayList<>(juegos);
-                juegosAdapter = new RecyclerViewJuegosAdapter(juegosFiltrados, PantallaTusJuegosActivity.this);
-                recyclerView2.setAdapter(juegosAdapter);
+                // Filtrar los juegos por el estado "Lo tengo"
+                juegosAgregados.clear();
+                juegosAgregados.addAll(juegos.stream()
+                        .filter(Videojuego::isLoTengo)
+                        .collect(Collectors.toList()));
+
+                // Crear o actualizar el adaptador con la lista filtrada
+                if (juegosAdapter == null) {
+                    juegosAdapter = new RecyclerViewJuegosAdapter(juegosAgregados, PantallaTusJuegosActivity.this);
+                    recyclerView2.setAdapter(juegosAdapter);
+                } else {
+                    juegosAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
 
-    private void filtrarJuegosPorPlataforma(Plataforma plataformaSeleccionada) {
+    /*private void filtrarJuegosPorPlataforma(Plataforma plataformaSeleccionada) {
         juegosFiltrados.clear();
         for (Videojuego juego : juegos) {
             if (juego.getPlataformas().contains(plataformaSeleccionada.getNombre())) {
@@ -109,5 +122,5 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
             }
         }
         juegosAdapter.notifyDataSetChanged();
-    }
+    }*/
 }

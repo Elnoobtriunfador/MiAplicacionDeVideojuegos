@@ -82,9 +82,16 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
             textViewPlataformasJuego = itemView.findViewById(R.id.textViewPlataformasJuego);
         }
     }
-    public void filtrarJuegosAgregados(String texto) {
+    public void filtrarJuegosAgregados() {
+        // Limpiar la lista actual de juegos agregados
         listaJuegosAgregados.clear();
-        listaJuegosAgregados.addAll(juegos);
+
+        // Filtrar los juegos que tienen "Lo tengo" en true
+        listaJuegosAgregados.addAll(juegos.stream()
+                .filter(Videojuego::isLoTengo)
+                .collect(Collectors.toList()));
+
+        // Notificar al RecyclerView que los datos han cambiado
         notifyDataSetChanged();
     }
 }
