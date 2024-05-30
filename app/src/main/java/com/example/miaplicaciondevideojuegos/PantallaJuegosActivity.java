@@ -96,7 +96,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         // El juego se agregó correctamente a la colección
                         Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
                         videojuego.setLoTengo(true); // Actualiza el objeto Videojuego
-                        agregarColeccion.setVisibility(View.INVISIBLE);
                         guardarCambiosEnFirestore();
                     })
                     .addOnFailureListener(e -> {
