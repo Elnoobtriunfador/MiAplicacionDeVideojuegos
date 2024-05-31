@@ -98,12 +98,10 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
                     // Actualiza los booleans
                     videojuego.cargarBooleans(doc);
                     juegos.add(videojuego);
-
-
-                    Log.d("PantallaTusJuegosActivity", "Videojuego: " + videojuego.getNombre());
-                    Log.d("PantallaTusJuegosActivity", "Plataformas: " + videojuego.getPlataformas().toString());
                 }
+
                 juegosAdapter.filtrarJuegosAgregados(juegos);
+                filtrarJuegos("Nintendo 3DS");
                 // Este método debe recibir una Plataforma, aquí deberías manejar la lógica para filtrar por plataforma seleccionada
                 // juegosAdapter = filtrarJuegosPorPlataforma();
             }
@@ -112,16 +110,19 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
 
     @Override
     public void onItemSelected(Plataforma plataforma) {
+        filtrarJuegos(plataforma.getNombre());
+    }
+
+    public void filtrarJuegos(String plataforma){
         List<Videojuego> listaFinal = new ArrayList<>();
         for (Videojuego juego : juegos){
             List<String> plataformaJuego = juego.getPlataformasNombres(juego.getPlataformas());
             for (String nombrePlataforma : plataformaJuego){
-                if (nombrePlataforma.equals(plataforma.getNombre())){
+                if (nombrePlataforma.equals(plataforma)){
                     listaFinal.add(juego);
                 }
             }
         }
-        Log.d("TAG", listaFinal.toString());
         juegosAdapter.filtrarJuegosAgregados(listaFinal);
     }
 }
