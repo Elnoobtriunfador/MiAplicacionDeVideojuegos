@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +29,49 @@ import com.google.firebase.Timestamp;
 public class PantallaRegistroActivity extends AppCompatActivity{
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private boolean isPasswordVisible = false;
+    private boolean isConfirmPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallaregistro);
+
+        EditText editTextContraseña = findViewById(R.id.textoContraseñaRegistro);
+        ImageView togglePasswordVisibility = findViewById(R.id.imageTogglePasswordVisibility);
+
+        EditText editTextConfirmarContraseña = findViewById(R.id.textoConfirmarContraseñaRegistro);
+        ImageView toggleConfirmPasswordVisibility = findViewById(R.id.imageToggleConfirmPasswordVisibility);
+
+        togglePasswordVisibility.setOnClickListener(view -> {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                editTextContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                togglePasswordVisibility.setImageResource(R.drawable.ojooculto);
+            } else {
+                // Mostrar contraseña
+                editTextContraseña.setInputType(1); // 1 es el valor para "text"
+                togglePasswordVisibility.setImageResource(R.drawable.ojo);
+            }
+            isPasswordVisible = !isPasswordVisible;
+            // Colocar el cursor al final del texto
+            editTextContraseña.setSelection(editTextContraseña.getText().length());
+        });
+
+        toggleConfirmPasswordVisibility.setOnClickListener(view -> {
+            if (isConfirmPasswordVisible) {
+                // Ocultar contraseña
+                editTextConfirmarContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                toggleConfirmPasswordVisibility.setImageResource(R.drawable.ojooculto);
+            } else {
+                // Mostrar contraseña
+                editTextConfirmarContraseña.setInputType(1); // 1 es el valor para "text"
+                toggleConfirmPasswordVisibility.setImageResource(R.drawable.ojo);
+            }
+            isConfirmPasswordVisible = !isConfirmPasswordVisible;
+            // Colocar el cursor al final del texto
+            editTextConfirmarContraseña.setSelection(editTextConfirmarContraseña.getText().length());
+        });
 
         Button botonRegistro = findViewById(R.id.botonRegistrarse);
         botonRegistro.setOnClickListener(view -> {

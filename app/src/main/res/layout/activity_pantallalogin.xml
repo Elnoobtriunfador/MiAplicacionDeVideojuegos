@@ -31,25 +31,42 @@
         android:layout_marginBottom="16dp"
         android:hint="Correo electronico"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/textoContraseña"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imagenLogo" />
 
-    <EditText
-        android:id="@+id/textoContraseña"
+    <RelativeLayout
         android:layout_width="357dp"
         android:layout_height="42dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="9dp"
         android:layout_marginEnd="6dp"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/checkboxRecuerdame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoUsuarioInicioSesion" />
+        app:layout_constraintTop_toBottomOf="@+id/textoUsuarioInicioSesion">
 
+        <EditText
+            android:id="@+id/textoContraseña"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:paddingEnd="50dp"
+            android:paddingRight="50dp" />
+
+        <ImageView
+            android:id="@+id/imageTogglePasswordVisibility"
+            android:layout_width="38dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:contentDescription="hace que se vea la contraseña"
+            android:padding="5dp"
+            android:src="@drawable/ojooculto" />
+    </RelativeLayout>
     <CheckBox
         android:id="@+id/checkboxRecuerdame"
         android:layout_width="wrap_content"

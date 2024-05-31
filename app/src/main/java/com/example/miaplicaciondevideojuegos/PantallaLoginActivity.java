@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class PantallaLoginActivity extends AppCompatActivity{
 
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,24 @@ public class PantallaLoginActivity extends AppCompatActivity{
                 finish();
             }
         }
+
+        EditText editTextContraseña = findViewById(R.id.textoContraseña);
+        ImageView togglePasswordVisibility = findViewById(R.id.imageTogglePasswordVisibility);
+
+        togglePasswordVisibility.setOnClickListener(view -> {
+            if (isPasswordVisible) {
+                // Ocultar contraseña
+                editTextContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                togglePasswordVisibility.setImageResource(R.drawable.ojooculto);
+            } else {
+                // Mostrar contraseña
+                editTextContraseña.setInputType(1); // 1 es el valor para "text"
+                togglePasswordVisibility.setImageResource(R.drawable.ojo);
+            }
+            isPasswordVisible = !isPasswordVisible;
+            // Colocar el cursor al final del texto
+            editTextContraseña.setSelection(editTextContraseña.getText().length());
+        });
 
         Button botonIniciarSesion = findViewById(R.id.botonInicioSesion);
         botonIniciarSesion.setOnClickListener(view -> {
