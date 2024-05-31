@@ -25,16 +25,16 @@ public class PantallaRecuperarContraActivity extends AppCompatActivity {
         botonEnviar.setOnClickListener(v -> {
             String email = editEmail.getText().toString().trim();
             if (email.isEmpty()) {
-                Toast.makeText(this, "Por favor, escribe un correo electronico", Toast.LENGTH_SHORT).show();
+                CustomToast.showToastShorter(this, "Por favor, escribe un correo electronico", 1000);
                 return;
             } else {
                 mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Email enviado", Toast.LENGTH_SHORT).show();
+                        CustomToast.showToastShorter(this, "Email enviado", 1000);
                         Intent intent = new Intent(this, PantallaLoginActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(this, "Email no encontrado", Toast.LENGTH_SHORT).show();
+                        CustomToast.showToastShorter(this, "Email no encontrado", 1000);
                     }
                 });
             }

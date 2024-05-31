@@ -68,7 +68,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
                     consolasAdapter.setOnItemSelectedListener(this);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(PantallaTusJuegosActivity.this, "Error al obtener plataformas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    CustomToast.showToastShorter(this, "Error al obtener plataformas: ", 1000);
                 });
 
         recyclerViewJuegos = findViewById(R.id.recyclerViewJuegos);
@@ -86,7 +86,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
             @Override
             public void onEvent(@NonNull QuerySnapshot value, @NonNull FirebaseFirestoreException error) {
                 if (error != null) {
-                    Toast.makeText(PantallaTusJuegosActivity.this, "Error al cargar los datos", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToastShorter(PantallaTusJuegosActivity.this, "Error al cargar los datos", 1000);
                     return;
                 }
 

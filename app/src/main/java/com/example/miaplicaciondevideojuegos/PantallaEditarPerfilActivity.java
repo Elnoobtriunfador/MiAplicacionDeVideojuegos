@@ -106,7 +106,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PantallaEditarPerfilActivity.this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
+                        CustomToast.showToastShorter(PantallaEditarPerfilActivity.this, "Error al guardar los cambios", 1000);
                     }
                 });
 
@@ -174,7 +174,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 abrirSelector();
             } else {
-                Toast.makeText(this, "La función de cámara no está disponible debido a la falta de permisos", Toast.LENGTH_SHORT).show();
+                CustomToast.showToastShorter(this, "La función de cámara no está disponible debido a la falta de permisos", 1000);
             }
         }
     }
@@ -237,12 +237,12 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(PantallaEditarPerfilActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToastShorter(PantallaEditarPerfilActivity.this, "Error al subir la imagen", 1000);
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error al procesar la imagen", Toast.LENGTH_SHORT).show();
+            CustomToast.showToastShorter(this, "Error al procesar la imagen", 1000);
         }
     }
 
@@ -258,7 +258,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(PantallaEditarPerfilActivity.this, "Error al guardar la URL de la imagen", Toast.LENGTH_SHORT).show();
+                        CustomToast.showToastShorter(PantallaEditarPerfilActivity.this, "Error al guardar la URL de la imagen", 1000);
                     }
                 });
     }

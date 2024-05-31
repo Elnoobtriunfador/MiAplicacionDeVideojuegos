@@ -70,7 +70,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
             @Override
             public void onEvent(@NonNull QuerySnapshot value, @NonNull FirebaseFirestoreException error) {
                 if (error != null) {
-                    Toast.makeText(PantallaTodosLosJuegosActivity.this, "Error al cargar los datos", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToastShorter(PantallaTodosLosJuegosActivity.this, "Error al cargar los datos", 1000);
                     return;
                 }
 

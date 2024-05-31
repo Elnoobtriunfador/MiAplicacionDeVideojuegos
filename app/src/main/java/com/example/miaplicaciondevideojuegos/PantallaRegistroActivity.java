@@ -49,7 +49,7 @@ public class PantallaRegistroActivity extends AppCompatActivity{
 
             if (email.isEmpty() || name.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
 
-                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                CustomToast.showToastShorter(this, "Por favor, complete todos los campos", 1000);
 
             } else {
 
@@ -84,16 +84,16 @@ public class PantallaRegistroActivity extends AppCompatActivity{
                                                 }
                                             });
 
-                                    Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                    CustomToast.showToastShorter(this, "Registro exitoso", 1000);
                                     Intent intent = new Intent(this, PantallaLoginActivity.class);
                                     startActivity(intent);
                                 } else {
 
-                                    Toast.makeText(this, "Correo ya registrado", Toast.LENGTH_SHORT).show();
+                                    CustomToast.showToastShorter(this, "Correo ya registrado", 1000);
                                 }
                             });
                 } else {
-                    Toast.makeText(this, "Las contraseñas deben coincidir", Toast.LENGTH_SHORT).show();
+                    CustomToast.showToastShorter(this, "Las contraseñas deben coincidir", 1000);
                 }
             }
         });

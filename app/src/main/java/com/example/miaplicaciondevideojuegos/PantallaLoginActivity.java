@@ -32,7 +32,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
 
         if (recuerdame && currentUser != null) {
             if (currentUser != null) {
-                Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
+                CustomToast.showToastShorter(this, "Inicio de sesion exitoso", 1000);
                 Intent intent = new Intent(this, PantallaPrincipalActivity.class);
                 startActivity(intent);
                 finish();
@@ -51,7 +51,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
 
             if (correo.isEmpty() || contra.isEmpty()) {
 
-                Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                CustomToast.showToastShorter(this, "Por favor, complete todos los campos", 1000);
 
             } else {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(correo, contra)
@@ -70,7 +70,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
                                     editor.apply();
                                 }
                                 if (user != null) {
-                                    Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
+                                    CustomToast.showToastShorter(this, "Inicio de sesion exitoso", 1000);
                                     Intent intent = new Intent(this, PantallaPrincipalActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -78,12 +78,12 @@ public class PantallaLoginActivity extends AppCompatActivity{
                             } else {
                                 user = null;
                                 if (user != null) {
-                                    Toast.makeText(this, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show();
+                                    CustomToast.showToastShorter(this, "Inicio de sesion exitoso", 1000);
                                     Intent intent = new Intent(this, PantallaPrincipalActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
-                                Toast.makeText(this, "Correo o contraseña incorrecto", Toast.LENGTH_SHORT).show();
+                                CustomToast.showToastShorter(this, "Correo o contraseña incorrecto", 1000);
                             }
                         });
             }

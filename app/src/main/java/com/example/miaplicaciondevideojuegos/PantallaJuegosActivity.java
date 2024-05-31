@@ -114,13 +114,12 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                             checkBoxManual.setChecked(false);
                             checkBoxJuego.setChecked(false);
                             checkBoxExtras.setChecked(false);
-                            Toast.makeText(this, "Juego eliminado de la colección", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToastShorter(this, "Juego eliminado de la colección", 1000);
                             videojuego.setLoTengo(false);
                             guardarCambiosEnFirestore();
                         })
                         .addOnFailureListener(e -> {
-                            // Error al agregar el juego
-                            Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToastShorter(this, "Error al agregar el juego", 1000);
                         });
             } else {
 
@@ -144,13 +143,12 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                             checkBoxJuego.setVisibility(View.VISIBLE);
                             checkBoxExtras.setVisibility(View.VISIBLE);
                             guardarCambios.setVisibility(View.VISIBLE);
-                            Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToastShorter(this, "Juego agregado a la colección", 1000);
                             videojuego.setLoTengo(true);
                             guardarCambiosEnFirestore();
                         })
                         .addOnFailureListener(e -> {
-                            // Error al agregar el juego
-                            Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
+                            CustomToast.showToastShorter(this, "Error al agregar el juego", 1000);
                         });
             }
         });
@@ -159,8 +157,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
 
 
             guardarCambiosEnFirestore();
-            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
-
+            CustomToast.showToastShorter(this, "Cambios guardados", 1000);
         });
 
 
