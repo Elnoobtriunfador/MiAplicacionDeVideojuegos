@@ -93,4 +93,10 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
         listaJuegosAgregados = listaFiltradaTemp;
         notifyDataSetChanged();
     }
+
+    public void actualizarLista(List<Videojuego> nuevaLista) {
+        juegos.clear();
+        juegos.addAll(nuevaLista);
+        notifyDataSetChanged();
+    }
 }

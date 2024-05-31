@@ -2,6 +2,7 @@ package com.example.miaplicaciondevideojuegos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -19,9 +20,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class PantallaTusJuegosActivity extends AppCompatActivity {
+public class PantallaTusJuegosActivity extends AppCompatActivity implements RecyclerViewConsolasAdapter.OnItemSelectedListener {
 
     private RecyclerView recyclerViewConsolas;
     private RecyclerView recyclerViewJuegos;
@@ -65,7 +65,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                     consolasAdapter = new RecyclerViewConsolasAdapter(plataformas, this);
                     recyclerViewConsolas.setAdapter(consolasAdapter);
                     consolasAdapter.selectDefaultItem(0);
-                    //adapter.setOnItemSelectedListener(this::filtrarJuegosPorPlataforma);
+                    consolasAdapter.setOnItemSelectedListener(this);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(PantallaTusJuegosActivity.this, "Error al obtener plataformas: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -98,19 +98,30 @@ public class PantallaTusJuegosActivity extends AppCompatActivity {
                     // Actualiza los booleans
                     videojuego.cargarBooleans(doc);
                     juegos.add(videojuego);
+
+
+                    Log.d("PantallaTusJuegosActivity", "Videojuego: " + videojuego.getNombre());
+                    Log.d("PantallaTusJuegosActivity", "Plataformas: " + videojuego.getPlataformas().toString());
                 }
                 juegosAdapter.filtrarJuegosAgregados(juegos);
+                // Este método debe recibir una Plataforma, aquí deberías manejar la lógica para filtrar por plataforma seleccionada
+                // juegosAdapter = filtrarJuegosPorPlataforma();
             }
         });
     }
 
-    /*private void filtrarJuegosPorPlataforma(Plataforma plataformaSeleccionada) {
-        juegosFiltrados.clear();
-        for (Videojuego juego : juegos) {
-            if (juego.getPlataformas().contains(plataformaSeleccionada.getNombre())) {
-                juegosFiltrados.add(juego);
+    @Override
+    public void onItemSelected(Plataforma plataforma) {
+        List<Videojuego> listaFinal = new ArrayList<>();
+        for (Videojuego juego : juegos){
+            List<String> plataformaJuego = juego.getPlataformasNombres(juego.getPlataformas());
+            for (String nombrePlataforma : plataformaJuego){
+                if (nombrePlataforma.equals(plataforma.getNombre())){
+                    listaFinal.add(juego);
+                }
             }
         }
-        juegosAdapter.notifyDataSetChanged();
-    }*/
+        Log.d("TAG", listaFinal.toString());
+        juegosAdapter.filtrarJuegosAgregados(listaFinal);
+    }
 }
