@@ -86,12 +86,19 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
                         videojuego.setLoTengo(true);
                         agregarColeccion.setVisibility(View.INVISIBLE);
-                        guardarCambiosEnFirestore();
                     })
                     .addOnFailureListener(e -> {
                         // Error al agregar el juego
                         Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
                     });
+        });
+
+        Button guardarCambios = findViewById(R.id.buttonGuardarCambios);
+        guardarCambios.setOnClickListener(view -> {
+
+            guardarCambiosEnFirestore();
+            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
+
         });
 
         // Listeners para CheckBox
