@@ -39,6 +39,18 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         videojuego = (Videojuego) getIntent().getSerializableExtra("Videojuego");
         Intent intent = getIntent();
 
+        CheckBox checkBoxEsperando = findViewById(R.id.checkBoxEsperando);
+        CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
+        CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
+        CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
+        CheckBox checkBoxCaratula = findViewById(R.id.checkBoxCaratula);
+        CheckBox checkBoxManual = findViewById(R.id.checkBoxManual);
+        CheckBox checkBoxJuego = findViewById(R.id.checkBoxJuego);
+        CheckBox checkBoxExtras = findViewById(R.id.checkBoxExtras);
+
+        Button guardarCambios = findViewById(R.id.buttonGuardarCambios);
+
+
         // Recuperar el valor int pasado en el Intent
         int claveInt = intent.getIntExtra("clave_int", 0);
 
@@ -75,48 +87,97 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
         agregarColeccion.setOnClickListener(view -> {
 
+
             // Obtén el ID del juego que se quiere agregar
             String juegoId = videojuego.getId(); // Implementa esta función para obtener el ID
-
-            // Actualiza el campo "tiene" a "true" en Firestore
             DocumentReference juegoRef = db.collection("juegos").document(juegoId);
-            juegoRef.update("Lo tengo", true)
-                    .addOnSuccessListener(aVoid -> {
-                        // El juego se agregó correctamente a la colección
-                        Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
-                        videojuego.setLoTengo(true);
-                        agregarColeccion.setVisibility(View.INVISIBLE);
-                    })
-                    .addOnFailureListener(e -> {
-                        // Error al agregar el juego
-                        Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
-                    });
+
+            if(videojuego.getLoTengo()){
+
+                juegoRef.update("Lo tengo", false)
+                        .addOnSuccessListener(aVoid -> {
+                            agregarColeccion.setText("Añadir a tu colección");
+                            checkBoxEsperando.setVisibility(View.INVISIBLE);
+                            checkBoxJugando.setVisibility(View.INVISIBLE);
+                            checkBoxCompletado.setVisibility(View.INVISIBLE);
+                            checkBoxAbandonado.setVisibility(View.INVISIBLE);
+                            checkBoxCaratula.setVisibility(View.INVISIBLE);
+                            checkBoxManual.setVisibility(View.INVISIBLE);
+                            checkBoxJuego.setVisibility(View.INVISIBLE);
+                            checkBoxExtras.setVisibility(View.INVISIBLE);
+                            guardarCambios.setVisibility(View.INVISIBLE);
+                            checkBoxEsperando.setChecked(false);
+                            checkBoxJugando.setChecked(false);
+                            checkBoxCompletado.setChecked(false);
+                            checkBoxAbandonado.setChecked(false);
+                            checkBoxCaratula.setChecked(false);
+                            checkBoxManual.setChecked(false);
+                            checkBoxJuego.setChecked(false);
+                            checkBoxExtras.setChecked(false);
+                            Toast.makeText(this, "Juego eliminado de la colección", Toast.LENGTH_SHORT).show();
+                            videojuego.setLoTengo(false);
+                            guardarCambiosEnFirestore();
+                        })
+                        .addOnFailureListener(e -> {
+                            // Error al agregar el juego
+                            Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+
+                juegoRef.update("Lo tengo", true)
+                        .addOnSuccessListener(aVoid -> {
+                            agregarColeccion.setText("Eliminar de la coleccion");
+                            checkBoxEsperando.setChecked(false);
+                            checkBoxJugando.setChecked(false);
+                            checkBoxCompletado.setChecked(false);
+                            checkBoxAbandonado.setChecked(false);
+                            checkBoxCaratula.setChecked(false);
+                            checkBoxManual.setChecked(false);
+                            checkBoxJuego.setChecked(false);
+                            checkBoxExtras.setChecked(false);
+                            checkBoxEsperando.setVisibility(View.VISIBLE);
+                            checkBoxJugando.setVisibility(View.VISIBLE);
+                            checkBoxCompletado.setVisibility(View.VISIBLE);
+                            checkBoxAbandonado.setVisibility(View.VISIBLE);
+                            checkBoxCaratula.setVisibility(View.VISIBLE);
+                            checkBoxManual.setVisibility(View.VISIBLE);
+                            checkBoxJuego.setVisibility(View.VISIBLE);
+                            checkBoxExtras.setVisibility(View.VISIBLE);
+                            guardarCambios.setVisibility(View.VISIBLE);
+                            Toast.makeText(this, "Juego agregado a la colección", Toast.LENGTH_SHORT).show();
+                            videojuego.setLoTengo(true);
+                            guardarCambiosEnFirestore();
+                        })
+                        .addOnFailureListener(e -> {
+                            // Error al agregar el juego
+                            Toast.makeText(this, "Error al agregar el juego", Toast.LENGTH_SHORT).show();
+                        });
+            }
         });
 
-        Button guardarCambios = findViewById(R.id.buttonGuardarCambios);
         guardarCambios.setOnClickListener(view -> {
+
 
             guardarCambiosEnFirestore();
             Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
 
         });
 
-        // Listeners para CheckBox
-        CheckBox checkBoxEsperando = findViewById(R.id.checkBoxEsperando);
+
         checkBoxEsperando.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean prevState = checkBoxEsperando.isChecked();
             videojuego.setEsperandoParaJugar(isChecked);
             gestionarCheckBoxes(checkBoxEsperando);
             checkBoxEsperando.setChecked(prevState);
         });
-        CheckBox checkBoxJugando = findViewById(R.id.checkBoxJugando);
+
         checkBoxJugando.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean prevState = checkBoxJugando.isChecked();
             videojuego.setJugando(isChecked);
             gestionarCheckBoxes(checkBoxJugando);
             checkBoxJugando.setChecked(prevState);
         });
-        CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
+
         checkBoxCompletado.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean prevState = checkBoxCompletado.isChecked();
             videojuego.setCompletado(isChecked);
@@ -124,7 +185,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
             checkBoxCompletado.setChecked(prevState);
         });
 
-        CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
+
         checkBoxAbandonado.setOnCheckedChangeListener((buttonView, isChecked) -> {
             boolean prevState = checkBoxAbandonado.isChecked();
             videojuego.setAbandonado(isChecked);
@@ -133,13 +194,13 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         });
 
         // Listeners para CheckBox
-        CheckBox checkBoxCaratula = findViewById(R.id.checkBoxCaratula);
+
         checkBoxCaratula.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setCaratulaObtenida(isChecked));
-        CheckBox checkBoxManual = findViewById(R.id.checkBoxManual);
+
         checkBoxManual.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setManualObtenido(isChecked));
-        CheckBox checkBoxJuego = findViewById(R.id.checkBoxJuego);
+
         checkBoxJuego.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setJuegoObtenido(isChecked));
-        CheckBox checkBoxExtras = findViewById(R.id.checkBoxExtras);
+
         checkBoxExtras.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setExtrasObtenidos(isChecked));
     }
 
@@ -211,6 +272,8 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         videojuego.setManualObtenido(documentSnapshot.getBoolean("Manual"));
                         videojuego.setJuegoObtenido(documentSnapshot.getBoolean("Juego"));
                         videojuego.setExtrasObtenidos(documentSnapshot.getBoolean("Extras"));
+                        videojuego.setLoTengo(documentSnapshot.getBoolean("Lo tengo"));
+
 
 
                         CheckBox checkBoxCaratula = findViewById(R.id.checkBoxCaratula);
@@ -222,7 +285,17 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
                         CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
                         Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
-                        agregarColeccion.setVisibility(videojuego.getLoTengo() ? View.GONE : View.VISIBLE);
+                        Button guardarCambios = findViewById(R.id.buttonGuardarCambios);
+                        agregarColeccion.setText(videojuego.getLoTengo() ? "Eleminiar de tu colección" : " Añadir a tu colección");
+                        checkBoxCaratula.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxManual.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxJuego.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxExtras.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxEsperando.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxJugando.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxCompletado.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxAbandonado.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
+                        guardarCambios.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
 
 
                         // CheckBoxes
@@ -234,7 +307,16 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         checkBoxJugando.setChecked(videojuego.isJugando());
                         checkBoxCompletado.setChecked(videojuego.isCompletado());
                         checkBoxAbandonado.setChecked(videojuego.isAbandonado());
-                        agregarColeccion.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.GONE : View.VISIBLE);
+                        agregarColeccion.setText(documentSnapshot.getBoolean("Lo tengo") ? "Eliminar de tu colección" : "Añadir a tu colección");
+                        checkBoxCaratula.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxManual.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxJuego.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxExtras.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxEsperando.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxJugando.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxCompletado.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        checkBoxAbandonado.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
+                        guardarCambios.setVisibility(documentSnapshot.getBoolean("Lo tengo") ? View.VISIBLE : View.INVISIBLE);
                     }
                 })
                 .addOnFailureListener(e -> {

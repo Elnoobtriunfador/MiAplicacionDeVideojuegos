@@ -28,6 +28,7 @@ public class Videojuego implements Serializable{
     private String userId;
 
     public Videojuego() {
+
         this.Plataformas = new ArrayList<>();
     }
 
