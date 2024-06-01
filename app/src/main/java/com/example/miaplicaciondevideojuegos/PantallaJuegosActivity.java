@@ -1,5 +1,6 @@
 package com.example.miaplicaciondevideojuegos;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +37,12 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallajuegos);
+
+        if (!NetworkUtil.isConnectedToInternet(this)) {
+            showNoInternetDialog();
+        } else {
+            setContentView(R.layout.activity_pantallajuegos);
+        }
 
         videojuego = (Videojuego) getIntent().getSerializableExtra("Videojuego");
         Intent intent = getIntent();
@@ -319,5 +327,20 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.w("FIREBASE", "Error al cargar los datos del juego:", e);
                 });
+    }
+    private void showNoInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No hay conexión a Internet");
+        builder.setMessage("Por favor, conecte su dispositivo a Internet para continuar.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                System.exit(0);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

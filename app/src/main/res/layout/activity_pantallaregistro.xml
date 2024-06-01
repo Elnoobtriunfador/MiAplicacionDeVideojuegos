@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@android:color/white"
     tools:context=".PantallaRegistroActivity">
 
     <ImageView
@@ -25,6 +26,7 @@
         android:id="@+id/textoCorreoRegistro"
         android:layout_width="357dp"
         android:layout_height="43dp"
+        android:textColor="@android:color/black"
         android:layout_marginStart="32dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="6dp"
@@ -38,6 +40,7 @@
         android:id="@+id/textoUsuarioRegistro"
         android:layout_width="357dp"
         android:layout_height="42dp"
+        android:textColor="@android:color/black"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="6dp"
@@ -63,6 +66,7 @@
         <EditText
             android:id="@+id/textoContraseñaRegistro"
             android:layout_width="match_parent"
+            android:textColor="@android:color/black"
             android:layout_height="match_parent"
             android:hint="Contraseña"
             android:inputType="textPassword"
@@ -97,6 +101,7 @@
 
         <EditText
             android:id="@+id/textoConfirmarContraseñaRegistro"
+            android:textColor="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Confirmar contraseña"
@@ -135,7 +140,6 @@
         android:id="@+id/textoIniciarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="91dp"
         android:clickable="true"
         android:focusable="true"
@@ -143,8 +147,6 @@
         android:textColor="@android:color/holo_blue_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/botonRegistrarse"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

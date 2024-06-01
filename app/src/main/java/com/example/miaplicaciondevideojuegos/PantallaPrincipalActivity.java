@@ -1,5 +1,6 @@
 package com.example.miaplicaciondevideojuegos;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +29,13 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallaprincipal);
+
+        if (!NetworkUtil.isConnectedToInternet(this)) {
+            showNoInternetDialog();
+        } else {
+            setContentView(R.layout.activity_pantallaprincipal); // o tu layout principal
+            // Continúa con el resto de la inicialización de tu actividad
+        }
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -77,5 +86,21 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void showNoInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No hay conexión a Internet");
+        builder.setMessage("Por favor, conecte su dispositivo a Internet para continuar.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                System.exit(0);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

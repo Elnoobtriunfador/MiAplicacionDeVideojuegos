@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@android:color/white"
     tools:context=".PantallaLoginActivity">
 
     <ImageView
@@ -25,6 +26,7 @@
         android:id="@+id/textoUsuarioInicioSesion"
         android:layout_width="357dp"
         android:layout_height="43dp"
+        android:textColor="@android:color/black"
         android:layout_marginStart="32dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="6dp"
@@ -49,6 +51,7 @@
         <EditText
             android:id="@+id/textoContraseña"
             android:layout_width="match_parent"
+            android:textColor="@android:color/black"
             android:layout_height="match_parent"
             android:hint="Contraseña"
             android:inputType="textPassword"
@@ -72,6 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:textColor="@android:color/black"
         android:layout_marginEnd="249dp"
         android:layout_marginBottom="13dp"
         android:text="Recuerdame"

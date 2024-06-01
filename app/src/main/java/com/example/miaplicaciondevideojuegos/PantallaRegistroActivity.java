@@ -1,6 +1,7 @@
 package com.example.miaplicaciondevideojuegos;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,12 @@ public class PantallaRegistroActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallaregistro);
+
+        if (!NetworkUtil.isConnectedToInternet(this)) {
+            showNoInternetDialog();
+        } else {
+            setContentView(R.layout.activity_pantallaregistro);
+        }
 
         EditText editTextContraseña = findViewById(R.id.textoContraseñaRegistro);
         ImageView togglePasswordVisibility = findViewById(R.id.imageTogglePasswordVisibility);
@@ -143,5 +151,21 @@ public class PantallaRegistroActivity extends AppCompatActivity{
             Intent intent = new Intent(this, PantallaLoginActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void showNoInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No hay conexión a Internet");
+        builder.setMessage("Por favor, conecte su dispositivo a Internet para continuar.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                System.exit(0);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

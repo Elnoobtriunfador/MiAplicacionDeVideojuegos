@@ -1,6 +1,7 @@
 package com.example.miaplicaciondevideojuegos;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -57,6 +59,12 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantallaeditarperfil);
+
+        if (!NetworkUtil.isConnectedToInternet(this)) {
+            showNoInternetDialog();
+        } else {
+            setContentView(R.layout.activity_pantallaeditarperfil);
+        }
 
         imagenPerfil = findViewById(R.id.imagenPerfil);
         editTextNombre = findViewById(R.id.editTextNombre);
@@ -303,5 +311,21 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
         File archivoImagen = File.createTempFile(nombreArchivo, ".jpg", directorioAlmacenamiento);
         rutaArchivoTemporal = archivoImagen.getAbsolutePath();
         return archivoImagen;
+    }
+
+    private void showNoInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No hay conexión a Internet");
+        builder.setMessage("Por favor, conecte su dispositivo a Internet para continuar.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                System.exit(0);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
