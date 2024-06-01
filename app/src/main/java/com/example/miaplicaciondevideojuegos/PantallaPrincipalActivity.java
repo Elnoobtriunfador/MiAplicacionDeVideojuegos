@@ -103,4 +103,7 @@ public class PantallaPrincipalActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    public void onBackPressed() {
+
+    }
 }

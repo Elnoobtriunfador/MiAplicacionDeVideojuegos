@@ -53,6 +53,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
 
     private static final int PERMISO_CAMARA_REQUEST = 1;
     private static final int SELECCIONAR_IMAGEN_REQUEST = 2;
+    private ImageButton botonVolver;
     private String rutaArchivoTemporal;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -102,7 +103,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
             });
         }
 
-        ImageButton botonVolver = findViewById(R.id.botonVolver);
+        botonVolver = findViewById(R.id.botonVolver);
         botonVolver.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantallaPrincipalActivity.class);
             startActivity(intent);
@@ -400,5 +401,9 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        botonVolver.performClick();
+
     }
 }

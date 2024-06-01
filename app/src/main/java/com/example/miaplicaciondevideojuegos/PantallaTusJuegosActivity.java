@@ -33,6 +33,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
     private List<Videojuego> juegos;
     private FirebaseFirestore db;
     private String nombre;
+    private ImageButton imagenVolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
 
         cargarDatos();
 
-        ImageButton imagenVolver = findViewById(R.id.imagenVolver);
+        imagenVolver = findViewById(R.id.imagenVolver);
         imagenVolver.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantallaPrincipalActivity.class);
             startActivity(intent);
@@ -148,5 +149,9 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        imagenVolver.performClick();
+
     }
 }

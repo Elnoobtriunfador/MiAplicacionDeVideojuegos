@@ -54,6 +54,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private String rutaArchivoTemporal;
     private String userId;
+    private Button botonGuardar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
         imagenPerfil = findViewById(R.id.imagenPerfil);
         editTextNombre = findViewById(R.id.editTextNombre);
         editTextBiografia = findViewById(R.id.editTextBiografia);
-        Button botonGuardar = findViewById(R.id.botonGuardarCambios);
+        botonGuardar = findViewById(R.id.botonGuardarCambios);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -327,5 +328,10 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void onBackPressed() {
+        botonGuardar.performClick();
+
     }
 }

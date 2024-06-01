@@ -32,6 +32,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     private TextView textViewPlataformas;
     private TextView textViewDesarrollador;
     private Videojuego videojuego;
+    private ImageButton imagenVolver;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
 
         cargarDatosDeFirestore();
 
-        ImageButton imagenVolver = findViewById(R.id.imagenVolver);
+        imagenVolver = findViewById(R.id.imagenVolver);
         imagenVolver.setOnClickListener(view -> {
             if(claveInt == 1){
                 Intent intent2 = new Intent(this, PantallaTusJuegosActivity.class);
@@ -342,5 +343,9 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        imagenVolver.performClick();
+
     }
 }

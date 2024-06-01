@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -146,5 +147,9 @@ public class PantallaLoginActivity extends AppCompatActivity{
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+        System.exit(0);
     }
 }

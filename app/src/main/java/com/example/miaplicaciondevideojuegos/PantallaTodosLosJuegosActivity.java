@@ -33,6 +33,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
     private RecyclerViewVideojuegosAdapter videojuegoAdapter;
     private List<Videojuego> listaVideojuegos;
     private EditText editTextBuscarJuego;
+    private ImageButton imagenVolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
 
         cargarDatos();
 
-        ImageButton imagenVolver = findViewById(R.id.imagenVolver);
+        imagenVolver = findViewById(R.id.imagenVolver);
         imagenVolver.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantallaPrincipalActivity.class);
             startActivity(intent);
@@ -108,5 +109,9 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        imagenVolver.performClick();
+
     }
 }

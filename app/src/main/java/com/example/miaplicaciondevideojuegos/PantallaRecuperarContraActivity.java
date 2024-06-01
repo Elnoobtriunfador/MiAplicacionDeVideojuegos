@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class PantallaRecuperarContraActivity extends AppCompatActivity {
 
+    private TextView textoIniciarSesion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +49,7 @@ public class PantallaRecuperarContraActivity extends AppCompatActivity {
                 });
             }
         });
-
-        TextView textoIniciarSesion = findViewById(R.id.textoIniciarSesion);
+        textoIniciarSesion = findViewById(R.id.textoIniciarSesion);
 
         textoIniciarSesion.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantallaLoginActivity.class);
@@ -69,5 +70,9 @@ public class PantallaRecuperarContraActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void onBackPressed() {
+        textoIniciarSesion.performClick();
+
     }
 }
