@@ -331,7 +331,8 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        botonGuardar.performClick();
-
+        super.onBackPressed();
+        Intent intentAbrirPerfil2 = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
+        startActivity(intentAbrirPerfil2);
     }
 }
