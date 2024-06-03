@@ -1,6 +1,5 @@
 package com.example.miaplicaciondevideojuegos;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -20,13 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import com.google.firebase.Timestamp;
 
 public class PantallaRegistroActivity extends AppCompatActivity{
 
@@ -55,31 +51,25 @@ public class PantallaRegistroActivity extends AppCompatActivity{
 
         togglePasswordVisibility.setOnClickListener(view -> {
             if (isPasswordVisible) {
-                // Ocultar contraseña
-                editTextContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                editTextContraseña.setInputType(129);
                 togglePasswordVisibility.setImageResource(R.drawable.ojooculto);
             } else {
-                // Mostrar contraseña
-                editTextContraseña.setInputType(1); // 1 es el valor para "text"
+                editTextContraseña.setInputType(1);
                 togglePasswordVisibility.setImageResource(R.drawable.ojo);
             }
             isPasswordVisible = !isPasswordVisible;
-            // Colocar el cursor al final del texto
             editTextContraseña.setSelection(editTextContraseña.getText().length());
         });
 
         toggleConfirmPasswordVisibility.setOnClickListener(view -> {
             if (isConfirmPasswordVisible) {
-                // Ocultar contraseña
-                editTextConfirmarContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                editTextConfirmarContraseña.setInputType(129);
                 toggleConfirmPasswordVisibility.setImageResource(R.drawable.ojooculto);
             } else {
-                // Mostrar contraseña
-                editTextConfirmarContraseña.setInputType(1); // 1 es el valor para "text"
+                editTextConfirmarContraseña.setInputType(1);
                 toggleConfirmPasswordVisibility.setImageResource(R.drawable.ojo);
             }
             isConfirmPasswordVisible = !isConfirmPasswordVisible;
-            // Colocar el cursor al final del texto
             editTextConfirmarContraseña.setSelection(editTextConfirmarContraseña.getText().length());
         });
 
@@ -120,15 +110,12 @@ public class PantallaRegistroActivity extends AppCompatActivity{
                                     userData.put("registrationMonth", month);
                                     userData.put("registrationDay", day);
 
-                                    // Establecer los datos del usuario en Firestore
                                     userRef.set(userData)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        // Datos del usuario establecidos correctamente
                                                     } else {
-                                                        // Error al establecer los datos del usuario
                                                     }
                                                 }
                                             });
@@ -163,7 +150,7 @@ public class PantallaRegistroActivity extends AppCompatActivity{
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });

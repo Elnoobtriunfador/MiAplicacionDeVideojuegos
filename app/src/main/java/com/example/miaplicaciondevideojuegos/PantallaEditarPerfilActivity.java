@@ -15,10 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -119,7 +117,6 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                     }
                 });
 
-        // Abrir la actividad de perfil
         Intent intentAbrirPerfil = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
         startActivity(intentAbrirPerfil);
     }
@@ -261,7 +258,6 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Forzar la carga de la nueva imagen
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -270,14 +266,6 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
                         CustomToast.showToastShorter(PantallaEditarPerfilActivity.this, "Error al guardar la URL de la imagen", 1000);
                     }
                 });
-    }
-
-    private void cargarImagenPerfilNueva(String imageUrl) {
-        // Limpiar la caché de Picasso
-        Picasso.get().invalidate(imageUrl);
-
-        // Cargar la nueva imagen
-        Picasso.get().load(imageUrl).into(imagenPerfil);
     }
 
     private Bitmap corregirOrientacion(Bitmap bitmap, String imagePath) {
@@ -322,7 +310,7 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });
@@ -331,7 +319,6 @@ public class PantallaEditarPerfilActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        super.onBackPressed();
         Intent intentAbrirPerfil2 = new Intent(PantallaEditarPerfilActivity.this, PantallaPerfilActivity.class);
         startActivity(intentAbrirPerfil2);
     }

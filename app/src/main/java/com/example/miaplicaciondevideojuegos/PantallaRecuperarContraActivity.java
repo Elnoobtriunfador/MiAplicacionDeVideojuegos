@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,7 +63,7 @@ public class PantallaRecuperarContraActivity extends AppCompatActivity {
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });

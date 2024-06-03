@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,16 +53,13 @@ public class PantallaLoginActivity extends AppCompatActivity{
 
         togglePasswordVisibility.setOnClickListener(view -> {
             if (isPasswordVisible) {
-                // Ocultar contraseña
-                editTextContraseña.setInputType(129); // 129 es el valor para "textPassword"
+                editTextContraseña.setInputType(129);
                 togglePasswordVisibility.setImageResource(R.drawable.ojooculto);
             } else {
-                // Mostrar contraseña
-                editTextContraseña.setInputType(1); // 1 es el valor para "text"
+                editTextContraseña.setInputType(1);
                 togglePasswordVisibility.setImageResource(R.drawable.ojo);
             }
             isPasswordVisible = !isPasswordVisible;
-            // Colocar el cursor al final del texto
             editTextContraseña.setSelection(editTextContraseña.getText().length());
         });
 
@@ -141,7 +136,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });
@@ -149,7 +144,7 @@ public class PantallaLoginActivity extends AppCompatActivity{
         alertDialog.show();
     }
     public void onBackPressed() {
-        finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+        finishAffinity();
         System.exit(0);
     }
 }

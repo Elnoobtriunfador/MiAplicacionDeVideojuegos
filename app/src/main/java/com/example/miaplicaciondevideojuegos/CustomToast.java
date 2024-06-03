@@ -11,7 +11,6 @@ public class CustomToast {
 
         toast.show();
 
-        // Cancel the toast after the specified duration
         new Handler().postDelayed(toast::cancel, durationInMillis);
     }
 }

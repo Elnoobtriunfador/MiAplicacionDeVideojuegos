@@ -7,20 +7,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,8 +92,8 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                     String imageUrl = documentSnapshot.getString("profileImageUrl");
                     if (imageUrl != null && !imageUrl.isEmpty()) {
                         Picasso.get()
-                                .load(imageUrl) // Carga la URL si está disponible
-                                .placeholder(R.drawable.iconoperfil) // Imagen predeterminada
+                                .load(imageUrl)
+                                .placeholder(R.drawable.iconoperfil)
                                 .into(imagenPerfil);
                     }
                 }
@@ -145,14 +142,13 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         super.onResume();
         cargarDatosUsuario();
 
-        // Escuchar cambios en tiempo real en los datos del usuario
         DocumentReference userRef = db.collection("users").document(userId);
         userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
                 if (documentSnapshot != null && documentSnapshot.exists()) {
-                    // Actualizar la interfaz de usuario con los nuevos datos del usuario
+
                     name = documentSnapshot.getString("name");
                     String bio = documentSnapshot.getString("bio");
                     String imageUrl = documentSnapshot.getString("profileImageUrl");
@@ -199,8 +195,8 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                     String imageUrl = documentSnapshot.getString("profileImageUrl");
                     if (imageUrl != null && !imageUrl.isEmpty()) {
                         Picasso.get()
-                                .load(imageUrl) // Carga la URL si está disponible
-                                .placeholder(R.drawable.iconoperfil) // Imagen predeterminada
+                                .load(imageUrl)
+                                .placeholder(R.drawable.iconoperfil)
                                 .into(imagenPerfil);
                     }
                 }
@@ -280,10 +276,9 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                     procesarImagenSeleccionada(imagenUri);
                 }
 
-                // Después de procesar la imagen, navegar a la pantalla de perfil
                 Intent intent = new Intent(this, PantallaPerfilActivity.class);
                 startActivity(intent);
-                finish(); // Finaliza la actividad actual para evitar volver atrás a la pantalla principal
+                finish();
             }
         }
     }
@@ -332,7 +327,6 @@ public class PantallaPerfilActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        // Forzar la carga de la nueva imagen
                         cargarImagenPerfilNueva(downloadUrl);
                         finish();
                     }
@@ -346,10 +340,9 @@ public class PantallaPerfilActivity extends AppCompatActivity {
     }
 
     private void cargarImagenPerfilNueva(String imageUrl) {
-        // Limpiar la caché de Picasso
+
         Picasso.get().invalidate(imageUrl);
 
-        // Cargar la nueva imagen
         Picasso.get().load(imageUrl).into(imagenPerfil);
     }
 
@@ -395,7 +388,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });
@@ -403,6 +396,7 @@ public class PantallaPerfilActivity extends AppCompatActivity {
         alertDialog.show();
     }
     public void onBackPressed() {
+
         botonVolver.performClick();
 
     }

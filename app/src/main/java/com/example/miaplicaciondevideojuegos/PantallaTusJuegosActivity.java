@@ -3,9 +3,7 @@ package com.example.miaplicaciondevideojuegos;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -61,7 +59,6 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
         plataformas = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
-        // Obtener datos de Firestore
         db.collection("plataformas")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -102,17 +99,13 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
                 juegos.clear();
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
-                    // Asigna el ID del documento al Videojuego
                     videojuego.setId(doc.getId());
-                    // Actualiza los booleans
                     videojuego.cargarBooleans(doc);
                     juegos.add(videojuego);
                 }
 
                 juegosAdapter.filtrarJuegosAgregados(juegos);
                 filtrarJuegos("Nintendo 3DS");
-                // Este método debe recibir una Plataforma, aquí deberías manejar la lógica para filtrar por plataforma seleccionada
-                // juegosAdapter = filtrarJuegosPorPlataforma();
             }
         });
     }
@@ -143,7 +136,7 @@ public class PantallaTusJuegosActivity extends AppCompatActivity implements Recy
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });

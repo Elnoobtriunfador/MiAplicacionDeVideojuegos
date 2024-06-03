@@ -3,13 +3,9 @@ package com.example.miaplicaciondevideojuegos;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -57,7 +53,6 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
 
         editTextBuscarJuego = findViewById(R.id.editTextBuscarJuego);
 
-        // Botón de búsqueda
         Button botonBuscar = findViewById(R.id.botonBuscar);
         botonBuscar.setOnClickListener(view -> {
             String textoBusqueda = editTextBuscarJuego.getText().toString();
@@ -86,7 +81,6 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
                 listaVideojuegos.clear();
                 for (QueryDocumentSnapshot doc : value) {
                     Videojuego videojuego = doc.toObject(Videojuego.class);
-                    // Asigna el ID del documento al Videojuego
                     videojuego.setId(doc.getId());
                     listaVideojuegos.add(videojuego);
                 }
@@ -103,7 +97,7 @@ public class PantallaTodosLosJuegosActivity extends AppCompatActivity {
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });

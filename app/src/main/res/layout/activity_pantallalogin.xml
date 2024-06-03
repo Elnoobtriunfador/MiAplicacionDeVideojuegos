@@ -70,19 +70,19 @@
             android:padding="5dp"
             android:src="@drawable/ojooculto" />
     </RelativeLayout>
+
     <CheckBox
         android:id="@+id/checkboxRecuerdame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:textColor="@android:color/black"
         android:layout_marginEnd="249dp"
         android:layout_marginBottom="13dp"
         android:text="Recuerdame"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/botonInicioSesion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoContraseña" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/botonInicioSesion"

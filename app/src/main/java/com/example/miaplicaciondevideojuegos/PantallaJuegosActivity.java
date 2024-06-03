@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +58,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         Button guardarCambios = findViewById(R.id.buttonGuardarCambios);
 
 
-        // Recuperar el valor int pasado en el Intent
         int claveInt = intent.getIntExtra("clave_int", 0);
 
         imageViewJuego = findViewById(R.id.imageViewJuego);
@@ -73,7 +70,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
             textViewNombreJuego.setText(videojuego.getNombre());
             textViewDesarrollador.setText(videojuego.getDesarrollador());
 
-            // Mostrar las plataformas en el TextView
             String plataformasTexto = TextUtils.join(", ", videojuego.getPlataformasNombres(videojuego.getPlataformas()));
             textViewPlataformas.setText(plataformasTexto);
         }
@@ -96,9 +92,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         Button agregarColeccion = findViewById(R.id.buttonAgregarColeccion);
         agregarColeccion.setOnClickListener(view -> {
 
-
-            // Obtén el ID del juego que se quiere agregar
-            String juegoId = videojuego.getId(); // Implementa esta función para obtener el ID
+            String juegoId = videojuego.getId();
             DocumentReference juegoRef = db.collection("juegos").document(juegoId);
 
             if(videojuego.getLoTengo()){
@@ -199,8 +193,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
             checkBoxAbandonado.setChecked(prevState);
         });
 
-        // Listeners para CheckBox
-
         checkBoxCaratula.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setCaratulaObtenida(isChecked));
 
         checkBoxManual.setOnCheckedChangeListener((buttonView, isChecked) -> videojuego.setManualObtenido(isChecked));
@@ -216,7 +208,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         CheckBox checkBoxCompletado = findViewById(R.id.checkBoxCompletado);
         CheckBox checkBoxAbandonado = findViewById(R.id.checkBoxAbandonado);
 
-        // Desmarcar todos los CheckBox excepto el que se ha marcado
         if (checkBox != checkBoxEsperando) {
             checkBoxEsperando.setChecked(false);
         }
@@ -234,10 +225,8 @@ public class PantallaJuegosActivity extends AppCompatActivity {
     private void guardarCambiosEnFirestore() {
         CollectionReference juegosRef = db.collection("juegos");
 
-        // Obtén el ID del documento desde el objeto Videojuego
         String juegoId = videojuego.getId();
 
-        // Crea un mapa con los datos del videojuego
         Map<String, Object> data = new HashMap<>();
         data.put("Esperando a jugar", videojuego.isEsperandoParaJugar());
         data.put("Jugando", videojuego.isJugando());
@@ -249,7 +238,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         data.put("Extras", videojuego.isExtrasObtenidos());
         data.put("Lo tengo", videojuego.getLoTengo());
 
-        // Actualiza el documento del juego en Firestore
         juegosRef.document(juegoId).update(data)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("FIREBASE", "Datos del juego actualizados correctamente.");
@@ -259,12 +247,10 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                 });
     }
 
-    // En la clase PantallaJuegosActivity, dentro del método onCreate
     private void cargarDatosDeFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference juegosRef = db.collection("juegos");
 
-        // Suponiendo que tienes un ID único para el juego
         String juegoId = videojuego.getId();
 
         juegosRef.document(juegoId).get()
@@ -304,7 +290,6 @@ public class PantallaJuegosActivity extends AppCompatActivity {
                         guardarCambios.setVisibility(videojuego.getLoTengo() ? View.VISIBLE : View.INVISIBLE);
 
 
-                        // CheckBoxes
                         checkBoxCaratula.setChecked(videojuego.isCaratulaObtenida());
                         checkBoxManual.setChecked(videojuego.isManualObtenido());
                         checkBoxJuego.setChecked(videojuego.isJuegoObtenido());
@@ -337,7 +322,7 @@ public class PantallaJuegosActivity extends AppCompatActivity {
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finishAffinity(); // Cierra todas las actividades relacionadas con esta aplicación
+                finishAffinity();
                 System.exit(0);
             }
         });

@@ -40,17 +40,14 @@ public class RecyclerViewVideojuegosAdapter extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(@NonNull VideojuegoViewHolder holder, int position) {
         Videojuego videojuego = listaFiltrada.get(position);
 
-        // Cargar la imagen usando Glide
         Glide.with(holder.itemView.getContext())
                 .load(videojuego.getImagen())
                 .into(holder.imageViewPortada);
 
         holder.textViewTitulo.setText(videojuego.getNombre());
 
-        // Obtener los nombres de las plataformas
         List<String> plataformasNombres = videojuego.getPlataformasNombres(videojuego.getPlataformas());
 
-        // Mostrar las plataformas en el TextView
         holder.textViewPlataformasJuego.setText(TextUtils.join(", ", plataformasNombres));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

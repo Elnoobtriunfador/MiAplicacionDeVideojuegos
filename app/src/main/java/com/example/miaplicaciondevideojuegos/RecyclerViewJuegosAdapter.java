@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerViewJuegosAdapter.JuegoViewHolder> {
 
@@ -41,17 +40,14 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull JuegoViewHolder holder, int position) {
         Videojuego videojuego = listaJuegosAgregados.get(position);
 
-        // Cargar la imagen usando Glide
         Glide.with(holder.itemView.getContext())
                 .load(videojuego.getImagen())
                 .into(holder.imageViewPortada);
 
         holder.textViewTitulo.setText(videojuego.getNombre());
 
-        // Obtener los nombres de las plataformas
         List<String> plataformasNombres = videojuego.getPlataformasNombres(videojuego.getPlataformas());
 
-        // Mostrar las plataformas en el TextView
         holder.textViewPlataformasJuego.setText(TextUtils.join(", ", plataformasNombres));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +87,6 @@ public class RecyclerViewJuegosAdapter extends RecyclerView.Adapter<RecyclerView
             }
         }
         listaJuegosAgregados = listaFiltradaTemp;
-        notifyDataSetChanged();
-    }
-
-    public void actualizarLista(List<Videojuego> nuevaLista) {
-        juegos.clear();
-        juegos.addAll(nuevaLista);
         notifyDataSetChanged();
     }
 }
